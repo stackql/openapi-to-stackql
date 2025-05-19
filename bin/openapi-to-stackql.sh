@@ -14,8 +14,8 @@ fi
 source "$VENV_DIR/bin/activate"
 
 # Install dependencies
-# echo "Installing dependencies via pip..."
-# pip install -r requirements.txt
+echo "Installing dependencies via pip..."
+pip install -r requirements.txt
 
 # Run the CLI
 python -m openapi_to_stackql.cli "$@"
