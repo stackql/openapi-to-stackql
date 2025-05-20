@@ -22,6 +22,11 @@ def main():
     help="Optional JSON string to override the 'servers' block in the output specs"
     )
     convert_parser.add_argument(
+    "--provider-config",
+    required=False,
+    help="Optional JSON string used for provider configuration"
+    )
+    convert_parser.add_argument(
         "--skip",
         required=False,
         help="Comma-separated list of filenames to skip (e.g., foo.yaml,bar.yaml)"
@@ -33,7 +38,7 @@ def main():
     if args.command == "analyze":
         analyze.run(input_dir=args.input, output_dir=args.output)
     elif args.command == "convert":
-        convert.run(input_dir=args.input, output_dir=args.output, config_path=args.config, provider_id=args.provider, servers=args.servers, skip_files=args.skip)
+        convert.run(input_dir=args.input, output_dir=args.output, config_path=args.config, provider_id=args.provider, servers=args.servers, provider_config=args.provider_config ,skip_files=args.skip)
     else:
         print(f"❌ Unknown command: {args.command}")
         parser.print_help()

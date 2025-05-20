@@ -31,7 +31,7 @@ def run(input_dir: str, output_dir: str):
 
     with open(output_path, "w", newline="", encoding="utf-8") as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(["filename", "path", "operationId", "verb", "response_object", "tags", "stackql_service_name", "stackql_resource_name", "stackql_method_name", "stackql_verb"])
+        writer.writerow(["filename", "path", "operationId", "verb", "response_object", "tags", "stackql_resource_name", "stackql_method_name", "stackql_verb"])
 
         for filename in os.listdir(input_dir):
             if not filename.endswith((".yaml", ".yml", ".json")):
@@ -51,4 +51,4 @@ def run(input_dir: str, output_dir: str):
                     tags_list = operation.get("tags", [])
                     tags_str = "|".join(tags_list) if tags_list else ""
 
-                    writer.writerow([filename, path, operation_id, verb, response_ref, tags_str, "", "", "", ""])
+                    writer.writerow([filename, path, operation_id, verb, response_ref, tags_str, "", "", ""])

@@ -56,7 +56,7 @@ def snake_case(name: str) -> str:
     return name.replace("-", "_")
 
 
-def run(input_dir: str, output_dir: str, config_path: str, provider_id: str, servers: str = None, skip_files: list[str] = []):
+def run(input_dir: str, output_dir: str, config_path: str, provider_id: str, servers: str = None, provider_config: str = None, skip_files: list[str] = []):
     version = "v00.00.00000"
     services_path = os.path.join(output_dir, version, "services")
     os.makedirs(services_path, exist_ok=True)
@@ -79,6 +79,9 @@ def run(input_dir: str, output_dir: str, config_path: str, provider_id: str, ser
 
         if not filename.endswith((".yaml", ".yml", ".json")):
             continue
+
+        base_name = os.path.splitext(filename)[0]
+        service_name = snake_case(base_name)
 
         spec_path = os.path.join(input_dir, filename)
         spec = load_spec(spec_path)
@@ -115,6 +118,9 @@ def run(input_dir: str, output_dir: str, config_path: str, provider_id: str, ser
                     "response": response_info
                 }
 
+                resources[resource]["id"] =f"{provider_id}.{service_name}.{resource}" 
+                resources[resource]["name"] = resource
+                resources[resource]["title"] = resource.replace("_", " ").title()
                 resources[resource]["methods"][method] = method_entry
                 if sqlverb:
                     resources[resource]["sqlVerbs"][sqlverb].append({
@@ -141,9 +147,6 @@ def run(input_dir: str, output_dir: str, config_path: str, provider_id: str, ser
         print(f"✅ Wrote enriched spec: {output_path}")
 
         # Add providerService entry
-        base_name = os.path.splitext(filename)[0]
-        service_name = snake_case(base_name)
-
         info = spec.get("info", {})
         spec_title = info.get("title", f"{service_name.replace('_', ' ').title()} API")
         spec_description = info.get("description", f"TODO: add description for {service_name}")
@@ -166,13 +169,15 @@ def run(input_dir: str, output_dir: str, config_path: str, provider_id: str, ser
         "name": provider_id,
         "version": version,
         "providerServices": provider_services,
-        "config": {
-            "auth": {
-                "credentialsenvvar": f"{provider_id.upper()}_CREDENTIALS",
-                "type": "service_account"
-            }
-        }
     }
+
+    if provider_config:
+        try:
+            provider_config_json = json.loads(provider_config)
+            provider_yaml["config"] = provider_config_json
+        except json.JSONDecodeError as e:
+            print(f"❌ Failed to parse provider config JSON: {e}")
+            raise SystemExit(1)
 
     write_spec(os.path.join(output_dir, version, "provider.yaml"), provider_yaml)
     print(f"📦 Wrote provider.yaml to {output_dir}/{version}/provider.yaml")

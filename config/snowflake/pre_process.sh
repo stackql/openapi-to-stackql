@@ -18,3 +18,5 @@ fi
 
 # Run the standalone pre_process.py script
 python3 config/snowflake/pre_process.py "$1"
+
+mv $1/stream.yaml $1/streams.yaml

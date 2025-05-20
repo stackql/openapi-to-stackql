@@ -38,3 +38,10 @@ output/
 *.log
 *.tmp
 *.bak
+
+# stackql
+.stackql/
+stackql*
+.env
+
+nohup.out

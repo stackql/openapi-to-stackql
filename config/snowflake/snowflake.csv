@@ -146,7 +146,7 @@ procedure.yaml,/api/v2/databases/{database}/schemas/{schema}/procedures,get,Proc
 procedure.yaml,/api/v2/databases/{database}/schemas/{schema}/procedures/{nameWithArgs},delete,,procedure,procedure,procedures,delete_procedure,delete,deleteProcedure
 procedure.yaml,/api/v2/databases/{database}/schemas/{schema}/procedures/{nameWithArgs},get,Procedure,procedure,procedure,procedures,fetch_procedure,select,fetchProcedure
 procedure.yaml,/api/v2/databases/{database}/schemas/{schema}/procedures/{nameWithArgs}:call,post,,procedure,procedure,procedures,call_procedure,,callProcedure
-result.yaml,/api/v2/results/{result_handler},get,,result,result,results,fetch_result,select,fetchResult
+result.yaml,/api/v2/results/{result_handler},get,,result,result,results,fetch_result,,fetchResult
 role.yaml,/api/v2/roles,post,,role,role,roles,create_role,insert,createRole
 role.yaml,/api/v2/roles,get,Role,role,role,roles,list_roles,select,listRoles
 role.yaml,/api/v2/roles/{name},delete,,role,role,roles,delete_role,delete,deleteRole
@@ -190,11 +190,11 @@ stage.yaml,/api/v2/databases/{database}/schemas/{schema}/stages/{name},delete,,s
 stage.yaml,/api/v2/databases/{database}/schemas/{schema}/stages/{name},get,Stage,stage,stage,stages,fetch_stage,select,fetchStage
 stage.yaml,/api/v2/databases/{database}/schemas/{schema}/stages/{name}/files,get,StageFile,stage,stage,files,list_files,select,listFiles
 stage.yaml,/api/v2/databases/{database}/schemas/{schema}/stages/{name}/files/{filePath}:presigned-url,post,FileTransferMaterial,stage,stage,presigned_url,get_presigned_url,select,getPresignedUrl
-stream.yaml,/api/v2/databases/{database}/schemas/{schema}/streams,post,,stream,stream,streams,create_stream,insert,createStream
-stream.yaml,/api/v2/databases/{database}/schemas/{schema}/streams,get,Stream,stream,stream,streams,list_streams,select,listStreams
-stream.yaml,/api/v2/databases/{database}/schemas/{schema}/streams/{name},delete,,stream,stream,streams,delete_stream,delete,deleteStream
-stream.yaml,/api/v2/databases/{database}/schemas/{schema}/streams/{name},get,Stream,stream,stream,streams,fetch_stream,select,fetchStream
-stream.yaml,/api/v2/databases/{database}/schemas/{schema}/streams/{name}:clone,post,,stream,stream,streams,clone_stream,,cloneStream
+streams.yaml,/api/v2/databases/{database}/schemas/{schema}/streams,post,,stream,stream,streams,create_stream,insert,createStream
+streams.yaml,/api/v2/databases/{database}/schemas/{schema}/streams,get,Stream,stream,stream,streams,list_streams,select,listStreams
+streams.yaml,/api/v2/databases/{database}/schemas/{schema}/streams/{name},delete,,stream,stream,streams,delete_stream,delete,deleteStream
+streams.yaml,/api/v2/databases/{database}/schemas/{schema}/streams/{name},get,Stream,stream,stream,streams,fetch_stream,select,fetchStream
+streams.yaml,/api/v2/databases/{database}/schemas/{schema}/streams/{name}:clone,post,,stream,stream,streams,clone_stream,,cloneStream
 table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables,post,,table,table,tables,create_table,insert,createTable
 table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables,get,Table,table,table,tables,list_tables,select,listTables
 table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name},delete,,table,table,tables,delete_table,delete,deleteTable

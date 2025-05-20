@@ -18,7 +18,10 @@ def merge_components(target, common):
         target["components"] = {}
 
     for section, items in common.get("components", {}).items():
-        if section not in target["components"]:
+        if section == "securitySchemes":
+            # Replace the entire securitySchemes section
+            target["components"][section] = copy.deepcopy(items)
+        elif section not in target["components"]:
             target["components"][section] = copy.deepcopy(items)
         else:
             for key, value in items.items():
@@ -37,11 +40,12 @@ def run(input_dir):
         if not filename.endswith((".yaml", ".yml")) or filename == "common.yaml":
             continue
 
-        full_path = os.path.join(input_dir, filename)
+        input_full_path = os.path.join(input_dir, filename)
+
         print(f"🔧 Merging components into: {filename}")
-        spec = load_yaml(full_path)
+        spec = load_yaml(input_full_path)
         merge_components(spec, common_spec)
-        write_yaml(full_path, spec)
+        write_yaml(input_full_path, spec)
 
     print("✅ Done.")
 
