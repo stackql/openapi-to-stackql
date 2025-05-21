@@ -54,7 +54,7 @@ class StackQLDocGenerator:
         
         # Replace <a> tags with markdown equivalent
         description = re.sub(r'<a\s+(?:[^>]*?\s+)?href="([^"]*)"(?:[^>]*?)>(.*?)</a>', 
-                           r'[\2](\1)', description, flags=re.IGNORECASE)
+                        r'[\2](\1)', description, flags=re.IGNORECASE)
         
         # Remove <p> tags and replace with space
         description = re.sub(r'</?p>', ' ', description, flags=re.IGNORECASE)
@@ -78,11 +78,15 @@ class StackQLDocGenerator:
         # Escape pipe characters for markdown tables
         description = description.replace('|', '\\|')
         
+        # Replace any remaining angle brackets that might cause JSX parsing issues
+        # This finds angle brackets not part of tags (since we've already processed HTML tags)
+        description = description.replace('<', '{').replace('>', '}')
+        
         # Remove trailing commas and spaces
         description = re.sub(r',\s*$', '', description).strip()
         
         return description
-    
+
     def replace_all_of(self, schema: Dict, visited: set = None, depth: int = 0) -> Dict:
         """Replace allOf constructs in JSON schema"""
         if visited is None:
