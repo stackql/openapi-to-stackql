@@ -53,6 +53,9 @@ function cleanDescription(description) {
     // Remove any trailing commas, spaces, and line breaks
     description = description.replace(/,\s*$/, '').trim();
 
+    description = description.replace(/</g, '{');
+    description = description.replace(/>/g, '}');
+
     return description;
 }
 
