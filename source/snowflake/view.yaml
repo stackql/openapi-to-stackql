@@ -12,7 +12,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas/{schema}/views:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/views:
     get:
       summary: List views
       tags:
@@ -20,8 +20,8 @@ paths:
       description: List views
       operationId: listViews
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/like
       - $ref: common.yaml#/components/parameters/startsWith
       - $ref: common.yaml#/components/parameters/showLimit
@@ -77,8 +77,8 @@ paths:
       description: Create a view
       operationId: createView
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
       responses:
@@ -116,7 +116,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/View'
-  /api/v2/databases/{database}/schemas/{schema}/views/{name}:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/views/{name}:
     get:
       summary: Fetch a view
       tags:
@@ -124,8 +124,8 @@ paths:
       description: Fetch a view
       operationId: fetchView
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -170,8 +170,8 @@ paths:
       description: Delete a view
       operationId: deleteView
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       responses:
@@ -482,8 +482,8 @@ components:
       description: Set `X-Snowflake-Authorization-Token-Type` to `OAUTH` if the token
         is snowflakeOAuth
   parameters:
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -492,8 +492,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.

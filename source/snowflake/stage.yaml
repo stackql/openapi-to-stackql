@@ -12,7 +12,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas/{schema}/stages:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/stages:
     get:
       summary: List stages
       tags:
@@ -21,8 +21,8 @@ paths:
         query parameters.
       operationId: listStages
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/like
       responses:
         '200':
@@ -71,8 +71,8 @@ paths:
         the request body.
       operationId: createStage
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       requestBody:
         required: true
@@ -107,7 +107,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/stages/{name}:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/stages/{name}:
     get:
       summary: Fetch a stage
       tags:
@@ -115,8 +115,8 @@ paths:
       description: Fetch a stage using the describe command output.
       operationId: fetchStage
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -152,8 +152,8 @@ paths:
           $ref: common.yaml#/components/responses/504GatewayTimeout
     delete:
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       summary: Delete a stage
@@ -186,7 +186,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/stages/{name}/files:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/stages/{name}/files:
     get:
       summary: List files in the stage.
       tags:
@@ -194,8 +194,8 @@ paths:
       description: List files in the stage -- this is equivalent to LIST @stage.
       operationId: listFiles
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/pattern
       responses:
@@ -232,7 +232,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/stages/{name}/files/{filePath}:presigned-url:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/stages/{name}/files/{filePath}:presigned-url:
     post:
       summary: Generate a presigned url and optionally encryption materials.
       tags:
@@ -241,8 +241,8 @@ paths:
         uploading and downloading files.
       operationId: getPresignedUrl
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - name: filePath
         description: The full stage path of the file.
@@ -698,8 +698,8 @@ components:
       description: Set `X-Snowflake-Authorization-Token-Type` to `OAUTH` if the token
         is snowflakeOAuth
   parameters:
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -708,8 +708,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.

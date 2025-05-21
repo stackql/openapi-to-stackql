@@ -12,7 +12,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas/{schema}/tasks:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tasks:
     get:
       summary: List tasks
       tags:
@@ -21,8 +21,8 @@ paths:
         query parameters.
       operationId: listTasks
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/rootOnly
       - $ref: common.yaml#/components/parameters/like
       - $ref: common.yaml#/components/parameters/startsWith
@@ -75,8 +75,8 @@ paths:
         request body.
       operationId: createTask
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       requestBody:
         required: true
@@ -123,7 +123,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tasks/{name}:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tasks/{name}:
     get:
       summary: Fetch a task
       tags:
@@ -131,8 +131,8 @@ paths:
       description: Fetch a task using the describe command output.
       operationId: fetchTask
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -174,8 +174,8 @@ paths:
         just an alter, the full property set must be provided.
       operationId: createOrAlterTask
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       requestBody:
         required: true
@@ -208,8 +208,8 @@ paths:
           $ref: common.yaml#/components/responses/504GatewayTimeout
     delete:
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       summary: Delete a task
@@ -242,7 +242,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tasks/{name}:execute:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tasks/{name}:execute:
     post:
       summary: Execute a task object.
       tags:
@@ -250,8 +250,8 @@ paths:
       description: Execute a task -- this is equivalent to EXECUTE IMMEDIATE.
       operationId: executeTask
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/asyncExec
       - name: retryLast
@@ -283,7 +283,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tasks/{name}:resume:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tasks/{name}:resume:
     post:
       summary: Resume a suspended task.
       tags:
@@ -292,8 +292,8 @@ paths:
         ... RESUME.
       operationId: resumeTask
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -318,7 +318,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tasks/{name}:suspend:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tasks/{name}:suspend:
     post:
       summary: Suspend a running task.
       tags:
@@ -327,8 +327,8 @@ paths:
         SUSPEND.
       operationId: suspendTask
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -353,7 +353,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tasks/{name}/dependents:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tasks/{name}/dependents:
     get:
       summary: Fetch the dependent tasks of a task
       tags:
@@ -362,8 +362,8 @@ paths:
         with identifier {name}.
       operationId: fetchTaskDependents
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - name: recursive
         in: query
@@ -406,7 +406,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tasks/{name}/current_graphs:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tasks/{name}/current_graphs:
     get:
       deprecated: true
       summary: Get the graph runs that are executing or scheduled for the task for
@@ -417,8 +417,8 @@ paths:
         executing or are next scheduled to run within the next 8 days.
       operationId: getCurrentGraphsDeprecated
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - in: query
         name: resultLimit
@@ -460,7 +460,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tasks/{name}/current-graphs:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tasks/{name}/current-graphs:
     get:
       summary: Get the graph runs that are executing or scheduled for the task for
         the next 8 days.
@@ -470,8 +470,8 @@ paths:
         executing or are next scheduled to run within the next 8 days.
       operationId: getCurrentGraphs
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - in: query
         name: resultLimit
@@ -513,7 +513,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tasks/{name}/complete_graphs:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tasks/{name}/complete_graphs:
     get:
       deprecated: true
       summary: Get the graph runs that are completed for the task.
@@ -522,8 +522,8 @@ paths:
       description: This function returns details for graph runs that are completed.
       operationId: getCompleteGraphsDeprecated
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - in: query
         name: resultLimit
@@ -571,7 +571,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tasks/{name}/complete-graphs:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tasks/{name}/complete-graphs:
     get:
       summary: Get the graph runs that are completed for the task.
       tags:
@@ -579,8 +579,8 @@ paths:
       description: This function returns details for graph runs that are completed.
       operationId: getCompleteGraphs
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - in: query
         name: resultLimit
@@ -1142,8 +1142,8 @@ components:
       description: Set `X-Snowflake-Authorization-Token-Type` to `OAUTH` if the token
         is snowflakeOAuth
   parameters:
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -1152,8 +1152,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.

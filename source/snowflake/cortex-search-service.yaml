@@ -8,7 +8,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas/{schema}/cortex-search-services:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/cortex-search-services:
     get:
       operationId: listCortexSearchServices
       summary: List cortex search services
@@ -16,8 +16,8 @@ paths:
       tags:
       - cortex-search-service
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/like
       - $ref: common.yaml#/components/parameters/fromName
       - $ref: common.yaml#/components/parameters/showLimit
@@ -70,8 +70,8 @@ paths:
       tags:
       - cortex-search-service
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       requestBody:
         required: true
@@ -117,7 +117,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/cortex-search-services/{name}:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/cortex-search-services/{name}:
     get:
       operationId: fetchCortexSearchService
       summary: Fetch a cortex search service.
@@ -125,8 +125,8 @@ paths:
       tags:
       - cortex-search-service
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -175,8 +175,8 @@ paths:
       tags:
       - cortex search service
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       responses:
@@ -208,7 +208,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/cortex-search-services/{service_name}:query:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/cortex-search-services/{service_name}:query:
     post:
       operationId: queryCortexSearchService
       summary: Query a Cortex Search Service.
@@ -216,8 +216,8 @@ paths:
       tags:
       - cortex-search-service
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - in: path
         name: service_name
         required: true
@@ -256,7 +256,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/cortex-search-services/{name}:suspend:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/cortex-search-services/{name}:suspend:
     post:
       operationId: suspendCortexSearchService
       summary: Suspend a cortex search service.
@@ -265,8 +265,8 @@ paths:
       tags:
       - cortex-search-service
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       - $ref: '#/components/parameters/suspendResumeTarget'
@@ -299,7 +299,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/cortex-search-services/{name}:resume:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/cortex-search-services/{name}:resume:
     post:
       operationId: resumeCortexSearchService
       description: Resume the cortex search service
@@ -307,8 +307,8 @@ paths:
       tags:
       - cortex-search-service
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       - $ref: '#/components/parameters/suspendResumeTarget'
@@ -356,8 +356,8 @@ components:
         - serving
         - SERVING
         example: indexing
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -366,8 +366,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.

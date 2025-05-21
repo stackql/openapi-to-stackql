@@ -12,7 +12,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas:
+  /api/v2/databases/{database_name}/schemas:
     get:
       summary: List schemas.
       tags:
@@ -20,7 +20,7 @@ paths:
       description: Lists the accessible schemas.
       operationId: listSchemas
       parameters:
-      - $ref: common.yaml#/components/parameters/database
+      - $ref: common.yaml#/components/parameters/database_name
       - $ref: common.yaml#/components/parameters/like
       - $ref: common.yaml#/components/parameters/startsWith
       - $ref: common.yaml#/components/parameters/showLimit
@@ -80,7 +80,7 @@ paths:
         provide the full schema definition when creating a schema.
       operationId: createSchema
       parameters:
-      - $ref: common.yaml#/components/parameters/database
+      - $ref: common.yaml#/components/parameters/database_name
       - $ref: common.yaml#/components/parameters/createMode
       - name: kind
         in: query
@@ -125,7 +125,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{name}:clone:
+  /api/v2/databases/{database_name}/schemas/{name}:clone:
     post:
       summary: Clone a schema.
       tags:
@@ -134,7 +134,7 @@ paths:
         You must provide the full schema definition when cloning an existing schema.
       operationId: cloneSchema
       parameters:
-      - $ref: common.yaml#/components/parameters/database
+      - $ref: common.yaml#/components/parameters/database_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/createMode
       - name: kind
@@ -186,7 +186,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{name}:undrop:
+  /api/v2/databases/{database_name}/schemas/{name}:undrop:
     post:
       summary: Undrop a schema.
       tags:
@@ -194,7 +194,7 @@ paths:
       description: Undrops schema.
       operationId: undropSchema
       parameters:
-      - $ref: common.yaml#/components/parameters/database
+      - $ref: common.yaml#/components/parameters/database_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -225,14 +225,14 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{name}:
+  /api/v2/databases/{database_name}/schemas/{name}:
     get:
       tags:
       - schema
       description: Fetches a schema.
       operationId: fetchSchema
       parameters:
-      - $ref: common.yaml#/components/parameters/database
+      - $ref: common.yaml#/components/parameters/database_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -280,7 +280,7 @@ paths:
         the full schema definition even when altering an existing schema.
       operationId: createOrAlterSchema
       parameters:
-      - $ref: common.yaml#/components/parameters/database
+      - $ref: common.yaml#/components/parameters/database_name
       - $ref: common.yaml#/components/parameters/name
       - name: kind
         in: query
@@ -334,7 +334,7 @@ paths:
         failure is returned if the schema does not exist. if the drop is unsuccessful.
       operationId: deleteSchema
       parameters:
-      - $ref: common.yaml#/components/parameters/database
+      - $ref: common.yaml#/components/parameters/database_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       - name: restrict
@@ -713,8 +713,8 @@ components:
       description: Set `X-Snowflake-Authorization-Token-Type` to `OAUTH` if the token
         is snowflakeOAuth
   parameters:
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -723,8 +723,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.

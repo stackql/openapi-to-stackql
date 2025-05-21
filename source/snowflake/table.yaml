@@ -12,7 +12,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas/{schema}/tables:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables:
     get:
       summary: List tables
       tags:
@@ -20,8 +20,8 @@ paths:
       description: Lists the tables under the database and schema.
       operationId: listTables
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/like
       - $ref: common.yaml#/components/parameters/startsWith
       - $ref: common.yaml#/components/parameters/showLimit
@@ -85,8 +85,8 @@ paths:
       description: Create a table.
       operationId: createTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
       requestBody:
@@ -124,7 +124,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:as_select:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:as_select:
     post:
       deprecated: true
       summary: Create a table using the result of the specified select query
@@ -133,8 +133,8 @@ paths:
       description: Create a table as select.
       operationId: createTableAsSelectDeprecated
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
@@ -180,7 +180,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables:as-select:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables:as-select:
     post:
       summary: Create a table using the result of the specified select query
       tags:
@@ -188,8 +188,8 @@ paths:
       description: Create a table as select.
       operationId: createTableAsSelect
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
       - name: query
@@ -234,7 +234,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:using_template:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:using_template:
     post:
       deprecated: true
       summary: Create a table using the templates specified in staged files
@@ -243,8 +243,8 @@ paths:
       description: Create a table using template.
       operationId: createTableUsingTemplateDeprecated
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
@@ -284,7 +284,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables:using-template:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables:using-template:
     post:
       summary: Create a table using the templates specified in staged files
       tags:
@@ -292,8 +292,8 @@ paths:
       description: Create a table using template.
       operationId: createTableUsingTemplate
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
       - name: query
@@ -338,7 +338,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:
     get:
       summary: Fetch a table.
       tags:
@@ -346,8 +346,8 @@ paths:
       description: Fetch a Table using the describe command output.
       operationId: fetchTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -395,8 +395,8 @@ paths:
         just an alter, the full property set must be provided.
       operationId: createOrAlterTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       requestBody:
         required: true
@@ -435,8 +435,8 @@ paths:
           $ref: common.yaml#/components/responses/504GatewayTimeout
     delete:
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       summary: Delete a table
@@ -473,7 +473,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:clone:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:clone:
     post:
       summary: Clone table
       tags:
@@ -481,8 +481,8 @@ paths:
       description: Create a new table by cloning from the specified resource
       operationId: cloneTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
@@ -533,7 +533,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:create_like:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:create_like:
     post:
       deprecated: true
       summary: Create a table like this existing one
@@ -542,8 +542,8 @@ paths:
       description: Create a new table like the specified resource, but empty
       operationId: createTableLikeDeprecated
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
@@ -582,7 +582,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:create-like:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:create-like:
     post:
       summary: Create a table like this existing one
       tags:
@@ -590,8 +590,8 @@ paths:
       description: Create a new table like the specified resource, but empty
       operationId: createTableLike
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
@@ -630,11 +630,11 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:undrop:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:undrop:
     post:
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       summary: Undrop a table
       tags:
@@ -670,12 +670,12 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:suspend_recluster:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:suspend_recluster:
     post:
       deprecated: true
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       summary: Suspend recluster of a table
@@ -712,11 +712,11 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:suspend-recluster:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:suspend-recluster:
     post:
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       summary: Suspend recluster of a table
@@ -753,12 +753,12 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:resume_recluster:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:resume_recluster:
     post:
       deprecated: true
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       summary: Resume recluster of a table
@@ -795,11 +795,11 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:resume-recluster:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:resume-recluster:
     post:
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       summary: Resume recluster of a table
@@ -836,12 +836,12 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:swapwith:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:swapwith:
     post:
       deprecated: true
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       - name: targetTableName
@@ -884,11 +884,11 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/tables/{name}:swap-with:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/tables/{name}:swap-with:
     post:
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       - name: targetName
@@ -1423,8 +1423,8 @@ components:
       description: Set `X-Snowflake-Authorization-Token-Type` to `OAUTH` if the token
         is snowflakeOAuth
   parameters:
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -1433,8 +1433,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.

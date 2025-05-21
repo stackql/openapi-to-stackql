@@ -12,7 +12,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas/{schema}/notebooks:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/notebooks:
     get:
       summary: List notebooks
       tags:
@@ -20,8 +20,8 @@ paths:
       description: List notebooks
       operationId: listNotebooks
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/like
       - $ref: common.yaml#/components/parameters/startsWith
       - $ref: common.yaml#/components/parameters/showLimit
@@ -73,8 +73,8 @@ paths:
       description: Create a notebook
       operationId: createNotebook
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       responses:
         '200':
@@ -111,7 +111,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Notebook'
-  /api/v2/databases/{database}/schemas/{schema}/notebooks/{name}:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/notebooks/{name}:
     get:
       summary: Fetch a notebook
       tags:
@@ -119,8 +119,8 @@ paths:
       description: Fetch a notebook
       operationId: fetchNotebook
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -167,8 +167,8 @@ paths:
       description: Delete a notebook
       operationId: deleteNotebook
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       responses:
@@ -200,7 +200,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/notebooks/{name}:execute:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/notebooks/{name}:execute:
     post:
       summary: Execute a Notebook
       tags:
@@ -208,8 +208,8 @@ paths:
       description: Execute a Notebook
       operationId: executeNotebook
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/asyncExec
       responses:
@@ -241,7 +241,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/notebooks/{name}:rename:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/notebooks/{name}:rename:
     post:
       summary: Changes the name of the notebook to new name.
       tags:
@@ -250,8 +250,8 @@ paths:
         must be unique for the schema.
       operationId: renameNotebook
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       - name: targetDatabase
@@ -304,7 +304,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/notebooks/{name}:add-live-version:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/notebooks/{name}:add-live-version:
     post:
       summary: Adds a LIVE version to the notebook
       tags:
@@ -312,8 +312,8 @@ paths:
       description: Adds a LIVE version to the notebook
       operationId: addLiveVersionNotebook
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - name: fromLast
         description: Sets the LIVE version to the LAST version of the notebook
@@ -356,7 +356,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/notebooks/{name}:commit:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/notebooks/{name}:commit:
     post:
       summary: Commits the LIVE version of the notebook
       tags:
@@ -365,8 +365,8 @@ paths:
         version of the notebook to the Git repository
       operationId: commitNotebook
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - name: version
         description: live version of the alias
@@ -756,8 +756,8 @@ components:
       description: Set `X-Snowflake-Authorization-Token-Type` to `OAUTH` if the token
         is snowflakeOAuth
   parameters:
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -766,8 +766,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.

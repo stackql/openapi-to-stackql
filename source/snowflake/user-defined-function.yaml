@@ -13,7 +13,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas/{schema}/user-defined-functions:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/user-defined-functions:
     post:
       summary: Create a UDF
       tags:
@@ -21,8 +21,8 @@ paths:
       description: Create a UDF
       operationId: createUserDefinedFunction
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
       responses:
@@ -67,8 +67,8 @@ paths:
       description: List UDFs
       operationId: listUserDefinedFunctions
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/like
       responses:
         '200':
@@ -110,7 +110,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/user-defined-functions/{nameWithArgs}:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/user-defined-functions/{nameWithArgs}:
     get:
       summary: Fetch a UDF
       tags:
@@ -118,8 +118,8 @@ paths:
       description: Fetch a UDF
       operationId: fetchUserDefinedFunction
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/nameWithArgs
       responses:
         '200':
@@ -166,8 +166,8 @@ paths:
       description: Delete a UDF
       operationId: deleteUserDefinedFunction
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/nameWithArgs
       - $ref: common.yaml#/components/parameters/ifExists
       responses:
@@ -199,7 +199,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/user-defined-functions/{nameWithArgs}:rename:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/user-defined-functions/{nameWithArgs}:rename:
     post:
       summary: Rename a UDF
       tags:
@@ -207,8 +207,8 @@ paths:
       description: Rename a UDF
       operationId: renameUserDefinedFunction
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/nameWithArgs
       - $ref: common.yaml#/components/parameters/ifExists
       - name: targetDatabase
@@ -958,8 +958,8 @@ components:
       description: Set `X-Snowflake-Authorization-Token-Type` to `OAUTH` if the token
         is snowflakeOAuth
   parameters:
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -968,8 +968,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.

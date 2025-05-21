@@ -12,7 +12,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables:
     get:
       summary: List iceberg tables
       tags:
@@ -21,8 +21,8 @@ paths:
         \ privileges."
       operationId: listIcebergTables
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/like
       - $ref: common.yaml#/components/parameters/startsWith
       - $ref: common.yaml#/components/parameters/showLimit
@@ -82,8 +82,8 @@ paths:
         separate subresources)
       operationId: createSnowflakeManagedIcebergTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
       responses:
@@ -121,7 +121,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/IcebergTable'
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables:as-select:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables:as-select:
     post:
       summary: Create a snowflake managed iceberg table as select
       tags:
@@ -129,8 +129,8 @@ paths:
       description: Create a snowflake managed iceberg table as select
       operationId: createSnowflakeManagedIcebergTableAsSelect
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
       - name: query
@@ -175,7 +175,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables:from-aws-glue-catalog:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables:from-aws-glue-catalog:
     post:
       summary: Create an unmanaged iceberg table from AWS Glue catalog
       tags:
@@ -183,8 +183,8 @@ paths:
       description: Create an unmanaged iceberg table from AWS Glue catalog
       operationId: createUnmanagedIcebergTableFromAWSGlueCatalog
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       responses:
         '200':
@@ -221,7 +221,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/IcebergTableFromAWSGlueCatalog'
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables:from-delta:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables:from-delta:
     post:
       summary: Create an unmanaged iceberg table from Delta
       tags:
@@ -229,8 +229,8 @@ paths:
       description: Create an unmanaged iceberg table from Delta
       operationId: createUnmanagedIcebergTableFromDelta
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       responses:
         '200':
@@ -267,7 +267,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/IcebergTableFromDelta'
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables:from-iceberg-files:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables:from-iceberg-files:
     post:
       summary: Create an unmanaged iceberg table from Iceberg files
       tags:
@@ -275,8 +275,8 @@ paths:
       description: Create an unmanaged iceberg table from Iceberg files
       operationId: createUnmanagedIcebergTableFromIcebergFiles
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       responses:
         '200':
@@ -313,7 +313,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/IcebergTableFromIcebergFiles'
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables:from-iceberg-rest:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables:from-iceberg-rest:
     post:
       summary: Create an unmanaged iceberg table from Iceberg REST
       tags:
@@ -321,8 +321,8 @@ paths:
       description: Create an unmanaged iceberg table from Iceberg REST
       operationId: createUnmanagedIcebergTableFromIcebergRest
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       responses:
         '200':
@@ -359,7 +359,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/IcebergTableFromIcebergRest'
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables/{name}:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables/{name}:
     get:
       summary: Describe iceberg table
       tags:
@@ -367,8 +367,8 @@ paths:
       description: Describe an iceberg table
       operationId: fetchIcebergTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -415,8 +415,8 @@ paths:
       description: Drop an iceberg table
       operationId: dropIcebergTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       - name: type
@@ -458,7 +458,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables/{name}:resume-recluster:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables/{name}:resume-recluster:
     post:
       summary: Resume recluster of an iceberg table
       tags:
@@ -467,8 +467,8 @@ paths:
         an external catalog do not allow clustering)
       operationId: resumeReclusterIcebergTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       responses:
@@ -500,7 +500,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables/{name}:suspend-recluster:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables/{name}:suspend-recluster:
     post:
       summary: Suspend recluster of an iceberg table
       tags:
@@ -509,8 +509,8 @@ paths:
         an external catalog do not allow clustering)
       operationId: suspendReclusterIcebergTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       responses:
@@ -542,7 +542,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables/{name}:refresh:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables/{name}:refresh:
     post:
       summary: Refreshes the metadata for an Apache Iceberg table that uses an external
         Iceberg catalog
@@ -552,8 +552,8 @@ paths:
         external Iceberg catalog
       operationId: refreshIcebergTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       responses:
@@ -591,7 +591,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RefreshIcebergTableRequest'
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables/{name}:convert-to-managed:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables/{name}:convert-to-managed:
     post:
       summary: "Converts an Apache Iceberg\u2122 table that uses an external Iceberg\
         \ catalog into a table that uses Snowflake as the catalog"
@@ -600,8 +600,8 @@ paths:
       description: Convert unmanaged iceberg table to managed iceberg table
       operationId: convertToManagedIcebergTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       responses:
@@ -639,7 +639,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ConvertToManagedIcebergTableRequest'
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables/{name}:undrop:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables/{name}:undrop:
     post:
       summary: Undrop iceberg table
       tags:
@@ -647,8 +647,8 @@ paths:
       description: Undrop an iceberg table
       operationId: undropIcebergTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -679,7 +679,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables/{name}:clone:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables/{name}:clone:
     post:
       summary: Clone a snowflake managed iceberg table
       tags:
@@ -687,8 +687,8 @@ paths:
       description: Clone a snowflake managed iceberg table
       operationId: cloneSnowflakeManagedIcebergTable
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
@@ -739,7 +739,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/IcebergTableClone'
-  /api/v2/databases/{database}/schemas/{schema}/iceberg-tables/{name}:create-like:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/iceberg-tables/{name}:create-like:
     post:
       summary: Create iceberg table like
       tags:
@@ -748,8 +748,8 @@ paths:
         table, but without copying data from the existing table.
       operationId: createSnowflakeManagedIcebergTableLike
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
@@ -1416,8 +1416,8 @@ components:
       description: Set `X-Snowflake-Authorization-Token-Type` to `OAUTH` if the token
         is snowflakeOAuth
   parameters:
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -1426,8 +1426,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.

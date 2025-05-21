@@ -12,7 +12,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas/{schema}/functions:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/functions:
     get:
       summary: List Functions
       tags:
@@ -20,8 +20,8 @@ paths:
       description: Lists the user functions under the database and schema.
       operationId: listFunctions
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/like
       responses:
         '200':
@@ -64,8 +64,8 @@ paths:
       description: Create a function.
       operationId: createFunction
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       requestBody:
         required: true
@@ -100,7 +100,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/functions/{nameWithArgs}:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/functions/{nameWithArgs}:
     get:
       summary: Fetch a Function.
       tags:
@@ -108,8 +108,8 @@ paths:
       description: Fetch a Function using the describe command output.
       operationId: fetchFunction
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/nameWithArgs
       responses:
         '200':
@@ -145,8 +145,8 @@ paths:
           $ref: common.yaml#/components/responses/504GatewayTimeout
     delete:
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/nameWithArgs
       - $ref: common.yaml#/components/parameters/ifExists
       summary: Delete a function
@@ -177,7 +177,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/functions/{name}:execute:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/functions/{name}:execute:
     post:
       summary: Execute a Function.
       tags:
@@ -185,8 +185,8 @@ paths:
       description: Execute a Function.
       operationId: executeFunction
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       requestBody:
         content:
@@ -537,8 +537,8 @@ components:
       description: Set `X-Snowflake-Authorization-Token-Type` to `OAUTH` if the token
         is snowflakeOAuth
   parameters:
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -547,8 +547,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.

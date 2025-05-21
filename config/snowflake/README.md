@@ -70,6 +70,8 @@ REG_STR='{"url": "file://'${PROVIDER_REGISTRY_ROOT_DIR}/providers'", "localDocRo
 
 ```sql
 select name, owner from snowflake.database.databases where endpoint = 'OKXVNMC-VH34026';
+
+SELECT name, bytes, data_retention_time_in_days, table_type FROM snowflake.table.tables WHERE database_name = 'SNOWFLAKE_SAMPLE_DATA' AND schema_name = 'TPCH_SF10' AND endpoint = 'OKXVNMC-VH34026' order by bytes DESC;
 ```
 
 ### 5. Publish the provider

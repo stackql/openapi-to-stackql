@@ -12,7 +12,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas/{schema}/procedures:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/procedures:
     get:
       summary: List procedures
       tags:
@@ -20,8 +20,8 @@ paths:
       description: List procedures
       operationId: listProcedures
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/like
       responses:
         '200':
@@ -70,8 +70,8 @@ paths:
       description: Create a procedure
       operationId: createProcedure
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       - $ref: common.yaml#/components/parameters/copyGrants
       responses:
@@ -109,7 +109,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Procedure'
-  /api/v2/databases/{database}/schemas/{schema}/procedures/{nameWithArgs}:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/procedures/{nameWithArgs}:
     get:
       summary: Fetch a procedure
       tags:
@@ -117,8 +117,8 @@ paths:
       description: Fetch a procedure
       operationId: fetchProcedure
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/nameWithArgs
       responses:
         '200':
@@ -165,8 +165,8 @@ paths:
       description: Delete a procedure
       operationId: deleteProcedure
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/nameWithArgs
       - $ref: common.yaml#/components/parameters/ifExists
       responses:
@@ -198,7 +198,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/procedures/{nameWithArgs}:call:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/procedures/{nameWithArgs}:call:
     post:
       summary: Call a procedure
       tags:
@@ -206,8 +206,8 @@ paths:
       description: Call a procedure
       operationId: callProcedure
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/nameWithArgs
       responses:
         '200':
@@ -1007,8 +1007,8 @@ components:
       description: Set `X-Snowflake-Authorization-Token-Type` to `OAUTH` if the token
         is snowflakeOAuth
   parameters:
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -1017,8 +1017,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.

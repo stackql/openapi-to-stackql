@@ -12,7 +12,7 @@ info:
     url: https://snowflake.com
     email: support@snowflake.com
 paths:
-  /api/v2/databases/{database}/schemas/{schema}/alerts:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/alerts:
     get:
       summary: List alerts
       tags:
@@ -20,8 +20,8 @@ paths:
       description: List alerts
       operationId: listAlerts
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/like
       - $ref: common.yaml#/components/parameters/startsWith
       - $ref: common.yaml#/components/parameters/showLimit
@@ -71,8 +71,8 @@ paths:
       description: Create an alert
       operationId: createAlert
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/createMode
       responses:
         '200':
@@ -109,7 +109,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Alert'
-  /api/v2/databases/{database}/schemas/{schema}/alerts/{name}:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/alerts/{name}:
     get:
       summary: Fetch an alert
       tags:
@@ -117,8 +117,8 @@ paths:
       description: Fetch an alert
       operationId: fetchAlert
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -163,8 +163,8 @@ paths:
       description: Delete an alert
       operationId: deleteAlert
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/ifExists
       responses:
@@ -196,7 +196,7 @@ paths:
           $ref: common.yaml#/components/responses/503ServiceUnavailable
         '504':
           $ref: common.yaml#/components/responses/504GatewayTimeout
-  /api/v2/databases/{database}/schemas/{schema}/alerts/{name}:clone:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/alerts/{name}:clone:
     post:
       summary: Create a new alert by cloning from the specified resource
       tags:
@@ -204,8 +204,8 @@ paths:
       description: Create a new alert by cloning from the specified resource
       operationId: cloneAlert
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       - $ref: common.yaml#/components/parameters/createMode
       - name: targetDatabase
@@ -257,7 +257,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AlertClone'
-  /api/v2/databases/{database}/schemas/{schema}/alerts/{name}:execute:
+  /api/v2/databases/{database_name}/schemas/{schema_name}/alerts/{name}:execute:
     post:
       summary: Execute an alert
       tags:
@@ -265,8 +265,8 @@ paths:
       description: Execute an alert
       operationId: executeAlert
       parameters:
-      - $ref: common.yaml#/components/parameters/database
-      - $ref: common.yaml#/components/parameters/schema
+      - $ref: common.yaml#/components/parameters/database_name
+      - $ref: common.yaml#/components/parameters/schema_name
       - $ref: common.yaml#/components/parameters/name
       responses:
         '200':
@@ -614,8 +614,8 @@ components:
       description: Set `X-Snowflake-Authorization-Token-Type` to `OAUTH` if the token
         is snowflakeOAuth
   parameters:
-    database:
-      name: database
+    database_name:
+      name: database_name
       description: Identifier (i.e. name) for the database to which the resource belongs.
         You can use the `/api/v2/databases` GET request to get a list of available
         databases.
@@ -624,8 +624,8 @@ components:
       schema:
         example: TEST_DB
         $ref: ./common.yaml#/components/schemas/Identifier
-    schema:
-      name: schema
+    schema_name:
+      name: schema_name
       description: Identifier (i.e. name) for the schema to which the resource belongs.
         You can use the `/api/v2/databases/{database}/schemas` GET request to get
         a list of available schemas for the specified database.
