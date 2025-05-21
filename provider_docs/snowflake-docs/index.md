@@ -26,7 +26,7 @@ Snowflake for managing data warehousing, analytics, and secure data sharing with
 <div class="row">
 <div class="providerDocColumn">
 <span>total services:&nbsp;<b>32</b></span><br />
-<span>total resources:&nbsp;<b>47</b></span><br />
+<span>total resources:&nbsp;<b>79</b></span><br />
 </div>
 </div>
 

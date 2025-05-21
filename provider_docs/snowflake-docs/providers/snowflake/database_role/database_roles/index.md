@@ -63,40 +63,72 @@ granted_to_roles,
 owner,
 owner_role_type
 FROM snowflake.database_role.database_roles
-WHERE database_name = '{{ database_name }}' AND endpoint = '{{ endpoint }}';
+WHERE database_name = '{{ database_name }}'
+AND endpoint = '{{ endpoint }}';
 ```
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>database_roles</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
 
 ```sql
 /*+ create */
 INSERT INTO snowflake.database_role.database_roles (
-database_name,
 data__name,
+data__comment,
+database_name,
 endpoint
 )
 SELECT 
-'{ database_name }',
-'{ name }',
-'{ endpoint }'
+'{{ name }}',
+'{{ comment }}',
+'{{ database_name }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
+<TabItem value="required">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.database_role.database_roles (
+data__name,
+database_name,
+endpoint
+)
+SELECT 
+'{{ name }}',
+'{{ database_name }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: database_roles
   props:
-  - name: database_name
-    value: string
-  - name: data__name
-    value: string
-  - name: endpoint
-    value: string
+    - name: database_name
+      value: string
+    - name: data__name
+      value: string
+    - name: endpoint
+      value: string
+    - name: name
+      value: string
+    - name: comment
+      value: string
 
 ```
 </TabItem>
@@ -109,5 +141,7 @@ Deletes the specified <code>database_roles</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.database_role.database_roles
-WHERE database_name = '{ database_name }' AND name = '{ name }' AND endpoint = '{ endpoint }';
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
 ```

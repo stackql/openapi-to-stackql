@@ -98,6 +98,6 @@ Run some test queries
 ### 7. Generate web docs
 
 ```bash
-bash ./bin/generate-docs.sh snowflake
+doc_gen/bin/generate_md_docs snowflake
 ```
 

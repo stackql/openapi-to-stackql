@@ -102,42 +102,91 @@ WHERE endpoint = '{{ endpoint }}';
 
 Use the following StackQL query and manifest file to create a new <code>compute_pools</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
 
 ```sql
 /*+ create */
 INSERT INTO snowflake.compute_pool.compute_pools (
-endpoint,
-data__min_nodes,
-data__instance_family,
 data__name,
-data__max_nodes
+data__min_nodes,
+data__max_nodes,
+data__instance_family,
+data__auto_resume,
+data__comment,
+data__auto_suspend_secs,
+endpoint
 )
 SELECT 
-'{ name }',
-'{ max_nodes }',
-'{ instance_family }',
-'{ endpoint }',
-'{ min_nodes }'
+'{{ name }}',
+'{{ min_nodes }}',
+'{{ max_nodes }}',
+'{{ instance_family }}',
+'{{ auto_resume }}',
+'{{ comment }}',
+'{{ auto_suspend_secs }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
+<TabItem value="required">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.compute_pool.compute_pools (
+data__name,
+data__instance_family,
+data__min_nodes,
+data__max_nodes,
+endpoint
+)
+SELECT 
+'{{ name }}',
+'{{ instance_family }}',
+'{{ min_nodes }}',
+'{{ max_nodes }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: compute_pools
   props:
-  - name: data__instance_family
-    value: string
-  - name: data__max_nodes
-    value: string
-  - name: data__min_nodes
-    value: string
-  - name: data__name
-    value: string
-  - name: endpoint
-    value: string
+    - name: data__instance_family
+      value: string
+    - name: data__max_nodes
+      value: string
+    - name: data__min_nodes
+      value: string
+    - name: data__name
+      value: string
+    - name: endpoint
+      value: string
+    - name: name
+      value: string
+    - name: min_nodes
+      value: integer
+    - name: max_nodes
+      value: integer
+    - name: instance_family
+      value: string
+    - name: auto_resume
+      value: boolean
+    - name: comment
+      value: string
+    - name: auto_suspend_secs
+      value: integer
 
 ```
 </TabItem>
@@ -151,9 +200,20 @@ Replaces all fields in the specified <code>compute_pools</code> resource.
 /*+ update */
 REPLACE snowflake.compute_pool.compute_pools
 SET 
-
+name = '{{ name }}',
+min_nodes = '{{ min_nodes }}',
+max_nodes = '{{ max_nodes }}',
+instance_family = '{{ instance_family }}',
+auto_resume = true|false,
+comment = '{{ comment }}',
+auto_suspend_secs = '{{ auto_suspend_secs }}'
 WHERE 
-name = '{ name }' AND data__instance_family = '{ data__instance_family }' AND data__max_nodes = '{ data__max_nodes }' AND data__min_nodes = '{ data__min_nodes }' AND data__name = '{ data__name }' AND endpoint = '{ endpoint }';
+name = '{{ name }}'
+AND data__instance_family = '{{ data__instance_family }}'
+AND data__max_nodes = '{{ data__max_nodes }}'
+AND data__min_nodes = '{{ data__min_nodes }}'
+AND data__name = '{{ data__name }}'
+AND endpoint = '{{ endpoint }}';
 ```
 
 ## `DELETE` example
@@ -163,5 +223,6 @@ Deletes the specified <code>compute_pools</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.compute_pool.compute_pools
-WHERE name = '{ name }' AND endpoint = '{ endpoint }';
+WHERE name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
 ```

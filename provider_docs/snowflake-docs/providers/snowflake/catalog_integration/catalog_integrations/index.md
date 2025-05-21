@@ -69,42 +69,85 @@ WHERE endpoint = '{{ endpoint }}';
 
 Use the following StackQL query and manifest file to create a new <code>catalog_integrations</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
 
 ```sql
 /*+ create */
 INSERT INTO snowflake.catalog_integration.catalog_integrations (
-endpoint,
-data__enabled,
-data__table_format,
 data__name,
-data__catalog
+data__catalog,
+data__table_format,
+data__enabled,
+data__comment,
+endpoint
 )
 SELECT 
-'{ enabled }',
-'{ catalog }',
-'{ name }',
-'{ table_format }',
-'{ endpoint }'
+'{{ name }}',
+'{{ catalog }}',
+'{{ table_format }}',
+'{{ enabled }}',
+'{{ comment }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
+<TabItem value="required">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.catalog_integration.catalog_integrations (
+data__name,
+data__catalog,
+data__table_format,
+data__enabled,
+endpoint
+)
+SELECT 
+'{{ name }}',
+'{{ catalog }}',
+'{{ table_format }}',
+'{{ enabled }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: catalog_integrations
   props:
-  - name: data__catalog
-    value: string
-  - name: data__enabled
-    value: string
-  - name: data__name
-    value: string
-  - name: data__table_format
-    value: string
-  - name: endpoint
-    value: string
+    - name: data__catalog
+      value: string
+    - name: data__enabled
+      value: string
+    - name: data__name
+      value: string
+    - name: data__table_format
+      value: string
+    - name: endpoint
+      value: string
+    - name: name
+      value: string
+    - name: catalog
+      props:
+        - name: catalog_source
+          value: string
+    - name: table_format
+      value: string
+    - name: enabled
+      value: boolean
+    - name: comment
+      value: string
 
 ```
 </TabItem>
@@ -117,5 +160,6 @@ Deletes the specified <code>catalog_integrations</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.catalog_integration.catalog_integrations
-WHERE name = '{ name }' AND endpoint = '{ endpoint }';
+WHERE name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
 ```

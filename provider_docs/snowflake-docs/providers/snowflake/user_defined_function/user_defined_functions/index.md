@@ -88,56 +88,138 @@ return_type,
 schema_name,
 valid_for_clustering
 FROM snowflake.user_defined_function.user_defined_functions
-WHERE database_name = '{{ database_name }}' AND schema_name = '{{ schema_name }}' AND endpoint = '{{ endpoint }}';
+WHERE database_name = '{{ database_name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
 ```
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>user_defined_functions</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
 
 ```sql
 /*+ create */
 INSERT INTO snowflake.user_defined_function.user_defined_functions (
-data__return_type,
-endpoint,
-schema_name,
+data__name,
+data__is_temporary,
+data__is_aggregate,
+data__is_memoizable,
+data__is_secure,
 data__arguments,
+data__return_type,
 data__language_config,
+data__comment,
+data__body,
 database_name,
-data__name
+schema_name,
+endpoint
 )
 SELECT 
-'{ language_config }',
-'{ database_name }',
-'{ name }',
-'{ schema_name }',
-'{ arguments }',
-'{ endpoint }',
-'{ return_type }'
+'{{ name }}',
+'{{ is_temporary }}',
+'{{ is_aggregate }}',
+'{{ is_memoizable }}',
+'{{ is_secure }}',
+'{{ arguments }}',
+'{{ return_type }}',
+'{{ language_config }}',
+'{{ comment }}',
+'{{ body }}',
+'{{ database_name }}',
+'{{ schema_name }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
+<TabItem value="required">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.user_defined_function.user_defined_functions (
+data__name,
+data__arguments,
+data__return_type,
+data__language_config,
+database_name,
+schema_name,
+endpoint
+)
+SELECT 
+'{{ name }}',
+'{{ arguments }}',
+'{{ return_type }}',
+'{{ language_config }}',
+'{{ database_name }}',
+'{{ schema_name }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: user_defined_functions
   props:
-  - name: database_name
-    value: string
-  - name: schema_name
-    value: string
-  - name: data__arguments
-    value: string
-  - name: data__language_config
-    value: string
-  - name: data__name
-    value: string
-  - name: data__return_type
-    value: string
-  - name: endpoint
-    value: string
+    - name: database_name
+      value: string
+    - name: schema_name
+      value: string
+    - name: data__arguments
+      value: string
+    - name: data__language_config
+      value: string
+    - name: data__name
+      value: string
+    - name: data__return_type
+      value: string
+    - name: endpoint
+      value: string
+    - name: name
+      value: string
+    - name: is_temporary
+      value: boolean
+    - name: is_aggregate
+      value: boolean
+    - name: is_memoizable
+      value: boolean
+    - name: is_secure
+      value: boolean
+    - name: arguments
+      value: array
+      props:
+        - name: name
+          value: string
+        - name: datatype
+          value: string
+        - name: default_value
+          value: string
+    - name: return_type
+      props:
+        - name: type
+          value: string
+    - name: language_config
+      props:
+        - name: language
+          value: string
+        - name: called_on_null_input
+          value: boolean
+        - name: is_volatile
+          value: boolean
+    - name: comment
+      value: string
+    - name: body
+      value: string
 
 ```
 </TabItem>
@@ -150,5 +232,8 @@ Deletes the specified <code>user_defined_functions</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.user_defined_function.user_defined_functions
-WHERE database_name = '{ database_name }' AND nameWithArgs = '{ nameWithArgs }' AND schema_name = '{ schema_name }' AND endpoint = '{ endpoint }';
+WHERE database_name = '{{ database_name }}'
+AND nameWithArgs = '{{ nameWithArgs }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
 ```

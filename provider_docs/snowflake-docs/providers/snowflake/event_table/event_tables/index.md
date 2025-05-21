@@ -86,44 +86,99 @@ search_optimization,
 search_optimization_bytes,
 search_optimization_progress
 FROM snowflake.event_table.event_tables
-WHERE database_name = '{{ database_name }}' AND schema_name = '{{ schema_name }}' AND endpoint = '{{ endpoint }}';
+WHERE database_name = '{{ database_name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
 ```
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>event_tables</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
 
 ```sql
 /*+ create */
 INSERT INTO snowflake.event_table.event_tables (
-database_name,
 data__name,
+data__cluster_by,
+data__data_retention_time_in_days,
+data__max_data_extension_time_in_days,
+data__change_tracking,
+data__default_ddl_collation,
+data__comment,
+database_name,
 schema_name,
 endpoint
 )
 SELECT 
-'{ endpoint }',
-'{ database_name }',
-'{ name }',
-'{ schema_name }'
+'{{ name }}',
+'{{ cluster_by }}',
+'{{ data_retention_time_in_days }}',
+'{{ max_data_extension_time_in_days }}',
+'{{ change_tracking }}',
+'{{ default_ddl_collation }}',
+'{{ comment }}',
+'{{ database_name }}',
+'{{ schema_name }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
+<TabItem value="required">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.event_table.event_tables (
+data__name,
+database_name,
+schema_name,
+endpoint
+)
+SELECT 
+'{{ name }}',
+'{{ database_name }}',
+'{{ schema_name }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: event_tables
   props:
-  - name: database_name
-    value: string
-  - name: schema_name
-    value: string
-  - name: data__name
-    value: string
-  - name: endpoint
-    value: string
+    - name: database_name
+      value: string
+    - name: schema_name
+      value: string
+    - name: data__name
+      value: string
+    - name: endpoint
+      value: string
+    - name: name
+      value: string
+    - name: cluster_by
+      value: array
+    - name: data_retention_time_in_days
+      value: integer
+    - name: max_data_extension_time_in_days
+      value: integer
+    - name: change_tracking
+      value: boolean
+    - name: default_ddl_collation
+      value: string
+    - name: comment
+      value: string
 
 ```
 </TabItem>
@@ -136,5 +191,8 @@ Deletes the specified <code>event_tables</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.event_table.event_tables
-WHERE database_name = '{ database_name }' AND name = '{ name }' AND schema_name = '{ schema_name }' AND endpoint = '{ endpoint }';
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
 ```

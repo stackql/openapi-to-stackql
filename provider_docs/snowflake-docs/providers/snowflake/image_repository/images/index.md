@@ -54,5 +54,8 @@ image_name,
 image_path,
 tags
 FROM snowflake.image_repository.images
-WHERE database_name = '{{ database_name }}' AND name = '{{ name }}' AND schema_name = '{{ schema_name }}' AND endpoint = '{{ endpoint }}';
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
 ```

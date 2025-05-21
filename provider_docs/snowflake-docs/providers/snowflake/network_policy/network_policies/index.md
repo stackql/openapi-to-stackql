@@ -71,8 +71,40 @@ WHERE endpoint = '{{ endpoint }}';
 
 Use the following StackQL query and manifest file to create a new <code>network_policies</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.network_policy.network_policies (
+data__name,
+data__allowed_network_rule_list,
+data__blocked_network_rule_list,
+data__allowed_ip_list,
+data__blocked_ip_list,
+data__comment,
+endpoint
+)
+SELECT 
+'{{ name }}',
+'{{ allowed_network_rule_list }}',
+'{{ blocked_network_rule_list }}',
+'{{ allowed_ip_list }}',
+'{{ blocked_ip_list }}',
+'{{ comment }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
+<TabItem value="required">
 
 ```sql
 /*+ create */
@@ -81,20 +113,33 @@ data__name,
 endpoint
 )
 SELECT 
-'{ name }',
-'{ endpoint }'
+'{{ name }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: network_policies
   props:
-  - name: data__name
-    value: string
-  - name: endpoint
-    value: string
+    - name: data__name
+      value: string
+    - name: endpoint
+      value: string
+    - name: name
+      value: string
+    - name: allowed_network_rule_list
+      value: array
+    - name: blocked_network_rule_list
+      value: array
+    - name: allowed_ip_list
+      value: array
+    - name: blocked_ip_list
+      value: array
+    - name: comment
+      value: string
 
 ```
 </TabItem>
@@ -107,5 +152,6 @@ Deletes the specified <code>network_policies</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.network_policy.network_policies
-WHERE name = '{ name }' AND endpoint = '{ endpoint }';
+WHERE name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
 ```

@@ -60,44 +60,103 @@ privileges,
 securable,
 securable_type
 FROM snowflake.database_role.grants
-WHERE database_name = '{{ database_name }}' AND name = '{{ name }}' AND endpoint = '{{ endpoint }}';
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
 ```
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>grants</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
 
 ```sql
 /*+ create */
 INSERT INTO snowflake.database_role.grants (
+data__securable,
+data__containing_scope,
+data__securable_type,
+data__grant_option,
+data__privileges,
 database_name,
 name,
-data__securable_type,
 endpoint
 )
 SELECT 
-'{ securable_type }',
-'{ database_name }',
-'{ name }',
-'{ endpoint }'
+'{{ securable }}',
+'{{ containing_scope }}',
+'{{ securable_type }}',
+'{{ grant_option }}',
+'{{ privileges }}',
+'{{ database_name }}',
+'{{ name }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
+<TabItem value="required">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.database_role.grants (
+data__securable_type,
+database_name,
+name,
+endpoint
+)
+SELECT 
+'{{ securable_type }}',
+'{{ database_name }}',
+'{{ name }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: grants
   props:
-  - name: database_name
-    value: string
-  - name: name
-    value: string
-  - name: data__securable_type
-    value: string
-  - name: endpoint
-    value: string
+    - name: database_name
+      value: string
+    - name: name
+      value: string
+    - name: data__securable_type
+      value: string
+    - name: endpoint
+      value: string
+    - name: securable
+      props:
+        - name: database
+          value: string
+        - name: schema
+          value: string
+        - name: service
+          value: string
+        - name: name
+          value: string
+    - name: containing_scope
+      props:
+        - name: database
+          value: string
+        - name: schema
+          value: string
+    - name: securable_type
+      value: string
+    - name: grant_option
+      value: boolean
+    - name: privileges
+      value: array
 
 ```
 </TabItem>
@@ -110,5 +169,8 @@ Deletes the specified <code>grants</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.database_role.grants
-WHERE database_name = '{ database_name }' AND name = '{ name }' AND data__securable_type = '{ data__securable_type }' AND endpoint = '{ endpoint }';
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND data__securable_type = '{{ data__securable_type }}'
+AND endpoint = '{{ endpoint }}';
 ```

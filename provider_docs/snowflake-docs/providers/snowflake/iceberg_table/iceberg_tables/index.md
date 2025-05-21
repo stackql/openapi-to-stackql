@@ -109,44 +109,157 @@ replace_invalid_characters,
 schema_name,
 storage_serialization_policy
 FROM snowflake.iceberg_table.iceberg_tables
-WHERE database_name = '{{ database_name }}' AND schema_name = '{{ schema_name }}' AND endpoint = '{{ endpoint }}';
+WHERE database_name = '{{ database_name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
 ```
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>iceberg_tables</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
 
 ```sql
 /*+ create */
 INSERT INTO snowflake.iceberg_table.iceberg_tables (
-database_name,
 data__name,
+data__comment,
+data__change_tracking,
+data__max_data_extension_time_in_days,
+data__external_volume,
+data__data_retention_time_in_days,
+data__catalog_sync,
+data__catalog,
+data__storage_serialization_policy,
+data__catalog_table_name,
+data__catalog_namespace,
+data__cluster_by,
+data__columns,
+data__base_location,
+data__replace_invalid_characters,
+data__metadata_file_path,
+data__constraints,
+database_name,
 schema_name,
 endpoint
 )
 SELECT 
-'{ endpoint }',
-'{ database_name }',
-'{ name }',
-'{ schema_name }'
+'{{ name }}',
+'{{ comment }}',
+'{{ change_tracking }}',
+'{{ max_data_extension_time_in_days }}',
+'{{ external_volume }}',
+'{{ data_retention_time_in_days }}',
+'{{ catalog_sync }}',
+'{{ catalog }}',
+'{{ storage_serialization_policy }}',
+'{{ catalog_table_name }}',
+'{{ catalog_namespace }}',
+'{{ cluster_by }}',
+'{{ columns }}',
+'{{ base_location }}',
+'{{ replace_invalid_characters }}',
+'{{ metadata_file_path }}',
+'{{ constraints }}',
+'{{ database_name }}',
+'{{ schema_name }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
+<TabItem value="required">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.iceberg_table.iceberg_tables (
+data__name,
+database_name,
+schema_name,
+endpoint
+)
+SELECT 
+'{{ name }}',
+'{{ database_name }}',
+'{{ schema_name }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: iceberg_tables
   props:
-  - name: database_name
-    value: string
-  - name: schema_name
-    value: string
-  - name: data__name
-    value: string
-  - name: endpoint
-    value: string
+    - name: database_name
+      value: string
+    - name: schema_name
+      value: string
+    - name: data__name
+      value: string
+    - name: endpoint
+      value: string
+    - name: name
+      value: string
+    - name: comment
+      value: string
+    - name: change_tracking
+      value: boolean
+    - name: max_data_extension_time_in_days
+      value: integer
+    - name: external_volume
+      value: string
+    - name: data_retention_time_in_days
+      value: integer
+    - name: catalog_sync
+      value: string
+    - name: catalog
+      value: string
+    - name: storage_serialization_policy
+      value: string
+    - name: catalog_table_name
+      value: string
+    - name: catalog_namespace
+      value: string
+    - name: cluster_by
+      value: array
+    - name: columns
+      value: array
+      props:
+        - name: name
+          value: string
+        - name: datatype
+          value: string
+        - name: comment
+          value: string
+        - name: nullable
+          value: boolean
+        - name: default_value
+          value: string
+    - name: base_location
+      value: string
+    - name: replace_invalid_characters
+      value: boolean
+    - name: metadata_file_path
+      value: string
+    - name: constraints
+      value: array
+      props:
+        - name: name
+          value: string
+        - name: column_names
+          value: array
+        - name: constraint_type
+          value: string
 
 ```
 </TabItem>
@@ -159,5 +272,8 @@ Deletes the specified <code>iceberg_tables</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.iceberg_table.iceberg_tables
-WHERE database_name = '{ database_name }' AND name = '{ name }' AND schema_name = '{ schema_name }' AND endpoint = '{ endpoint }';
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
 ```

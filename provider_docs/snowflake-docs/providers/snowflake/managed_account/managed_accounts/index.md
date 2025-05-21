@@ -40,7 +40,7 @@ Creates, updates, deletes, gets or lists a <code>managed_accounts</code> resourc
 | <CopyableCode code="created_on" /> | `string` | Date and time the account was created. |
 | <CopyableCode code="locator" /> | `string` | Legacy identifier for the account. |
 | <CopyableCode code="region" /> | `string` | Region in which the managed account is located. For reader accounts, this is always the same as the region for the provider account. |
-| <CopyableCode code="url" /> | `string` | Account URL that is used to connect to the account, in the account name format. The account identifier in this format follows the pattern {orgname}-{account_name}. |
+| <CopyableCode code="url" /> | `string` | Account URL that is used to connect to the account, in the account name format. The account identifier in this format follows the pattern <orgname>-<account_name>. |
 
 ## Methods
 | Name | Accessible by | Required Params | Description |
@@ -74,42 +74,83 @@ WHERE endpoint = '{{ endpoint }}';
 
 Use the following StackQL query and manifest file to create a new <code>managed_accounts</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
 
 ```sql
 /*+ create */
 INSERT INTO snowflake.managed_account.managed_accounts (
-endpoint,
+data__name,
+data__comment,
 data__admin_name,
 data__admin_password,
 data__account_type,
-data__name
+endpoint
 )
 SELECT 
-'{ admin_name }',
-'{ name }',
-'{ admin_password }',
-'{ endpoint }',
-'{ account_type }'
+'{{ name }}',
+'{{ comment }}',
+'{{ admin_name }}',
+'{{ admin_password }}',
+'{{ account_type }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
+<TabItem value="required">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.managed_account.managed_accounts (
+data__name,
+data__admin_name,
+data__admin_password,
+data__account_type,
+endpoint
+)
+SELECT 
+'{{ name }}',
+'{{ admin_name }}',
+'{{ admin_password }}',
+'{{ account_type }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: managed_accounts
   props:
-  - name: data__account_type
-    value: string
-  - name: data__admin_name
-    value: string
-  - name: data__admin_password
-    value: string
-  - name: data__name
-    value: string
-  - name: endpoint
-    value: string
+    - name: data__account_type
+      value: string
+    - name: data__admin_name
+      value: string
+    - name: data__admin_password
+      value: string
+    - name: data__name
+      value: string
+    - name: endpoint
+      value: string
+    - name: name
+      value: string
+    - name: comment
+      value: string
+    - name: admin_name
+      value: string
+    - name: admin_password
+      value: string
+    - name: account_type
+      value: string
 
 ```
 </TabItem>
@@ -122,5 +163,6 @@ Deletes the specified <code>managed_accounts</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.managed_account.managed_accounts
-WHERE name = '{ name }' AND endpoint = '{ endpoint }';
+WHERE name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
 ```

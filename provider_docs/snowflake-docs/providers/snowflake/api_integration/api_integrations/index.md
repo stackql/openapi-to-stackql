@@ -68,42 +68,89 @@ WHERE endpoint = '{{ endpoint }}';
 
 Use the following StackQL query and manifest file to create a new <code>api_integrations</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
 
 ```sql
 /*+ create */
 INSERT INTO snowflake.api_integration.api_integrations (
-endpoint,
-data__api_allowed_prefixes,
-data__enabled,
+data__name,
 data__api_hook,
-data__name
+data__api_allowed_prefixes,
+data__api_blocked_prefixes,
+data__enabled,
+data__comment,
+endpoint
 )
 SELECT 
-'{ enabled }',
-'{ api_allowed_prefixes }',
-'{ api_hook }',
-'{ name }',
-'{ endpoint }'
+'{{ name }}',
+'{{ api_hook }}',
+'{{ api_allowed_prefixes }}',
+'{{ api_blocked_prefixes }}',
+'{{ enabled }}',
+'{{ comment }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
+<TabItem value="required">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.api_integration.api_integrations (
+data__name,
+data__api_hook,
+data__api_allowed_prefixes,
+data__enabled,
+endpoint
+)
+SELECT 
+'{{ name }}',
+'{{ api_hook }}',
+'{{ api_allowed_prefixes }}',
+'{{ enabled }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: api_integrations
   props:
-  - name: data__api_allowed_prefixes
-    value: string
-  - name: data__api_hook
-    value: string
-  - name: data__enabled
-    value: string
-  - name: data__name
-    value: string
-  - name: endpoint
-    value: string
+    - name: data__api_allowed_prefixes
+      value: string
+    - name: data__api_hook
+      value: string
+    - name: data__enabled
+      value: string
+    - name: data__name
+      value: string
+    - name: endpoint
+      value: string
+    - name: name
+      value: string
+    - name: api_hook
+      props:
+        - name: type
+          value: string
+    - name: api_allowed_prefixes
+      value: array
+    - name: api_blocked_prefixes
+      value: array
+    - name: enabled
+      value: boolean
+    - name: comment
+      value: string
 
 ```
 </TabItem>
@@ -117,9 +164,19 @@ Replaces all fields in the specified <code>api_integrations</code> resource.
 /*+ update */
 REPLACE snowflake.api_integration.api_integrations
 SET 
-
+name = '{{ name }}',
+api_hook = '{{ api_hook }}',
+api_allowed_prefixes = '{{ api_allowed_prefixes }}',
+api_blocked_prefixes = '{{ api_blocked_prefixes }}',
+enabled = true|false,
+comment = '{{ comment }}'
 WHERE 
-name = '{ name }' AND data__api_allowed_prefixes = '{ data__api_allowed_prefixes }' AND data__api_hook = '{ data__api_hook }' AND data__enabled = '{ data__enabled }' AND data__name = '{ data__name }' AND endpoint = '{ endpoint }';
+name = '{{ name }}'
+AND data__api_allowed_prefixes = '{{ data__api_allowed_prefixes }}'
+AND data__api_hook = '{{ data__api_hook }}'
+AND data__enabled = '{{ data__enabled }}'
+AND data__name = '{{ data__name }}'
+AND endpoint = '{{ endpoint }}';
 ```
 
 ## `DELETE` example
@@ -129,5 +186,6 @@ Deletes the specified <code>api_integrations</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.api_integration.api_integrations
-WHERE name = '{ name }' AND endpoint = '{ endpoint }';
+WHERE name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
 ```

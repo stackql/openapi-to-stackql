@@ -68,34 +68,76 @@ WHERE endpoint = '{{ endpoint }}';
 
 Use the following StackQL query and manifest file to create a new <code>external_volumes</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
 
 ```sql
 /*+ create */
 INSERT INTO snowflake.external_volume.external_volumes (
-data__storage_locations,
 data__name,
+data__storage_locations,
+data__allow_writes,
+data__comment,
 endpoint
 )
 SELECT 
-'{ name }',
-'{ endpoint }',
-'{ storage_locations }'
+'{{ name }}',
+'{{ storage_locations }}',
+'{{ allow_writes }}',
+'{{ comment }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
+<TabItem value="required">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.external_volume.external_volumes (
+data__name,
+data__storage_locations,
+endpoint
+)
+SELECT 
+'{{ name }}',
+'{{ storage_locations }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: external_volumes
   props:
-  - name: data__name
-    value: string
-  - name: data__storage_locations
-    value: string
-  - name: endpoint
-    value: string
+    - name: data__name
+      value: string
+    - name: data__storage_locations
+      value: string
+    - name: endpoint
+      value: string
+    - name: name
+      value: string
+    - name: storage_locations
+      value: array
+      props:
+        - name: name
+          value: string
+        - name: storage_provider
+          value: string
+    - name: allow_writes
+      value: boolean
+    - name: comment
+      value: string
 
 ```
 </TabItem>
@@ -108,5 +150,6 @@ Deletes the specified <code>external_volumes</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.external_volume.external_volumes
-WHERE name = '{ name }' AND endpoint = '{ endpoint }';
+WHERE name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
 ```

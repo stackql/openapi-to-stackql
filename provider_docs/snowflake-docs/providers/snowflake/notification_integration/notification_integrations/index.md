@@ -63,8 +63,36 @@ WHERE endpoint = '{{ endpoint }}';
 
 Use the following StackQL query and manifest file to create a new <code>notification_integrations</code> resource.
 
-<Tabs     defaultValue="all"    values={[        { label: 'All Properties', value: 'all' }, { label: 'Manifest', value: 'manifest' }    ]}>
+<Tabs
+    defaultValue="all"
+    values={[
+        { label: 'Required Properties', value: 'required' },
+        { label: 'All Properties', value: 'all', },
+        { label: 'Manifest', value: 'manifest', },
+    ]
+}>
 <TabItem value="all">
+
+```sql
+/*+ create */
+INSERT INTO snowflake.notification_integration.notification_integrations (
+data__name,
+data__enabled,
+data__comment,
+data__notification_hook,
+endpoint
+)
+SELECT 
+'{{ name }}',
+'{{ enabled }}',
+'{{ comment }}',
+'{{ notification_hook }}',
+'{{ endpoint }}'
+;
+```
+</TabItem>
+
+<TabItem value="required">
 
 ```sql
 /*+ create */
@@ -74,23 +102,34 @@ data__notification_hook,
 endpoint
 )
 SELECT 
-'{ notification_hook }',
-'{ name }',
-'{ endpoint }'
+'{{ name }}',
+'{{ notification_hook }}',
+'{{ endpoint }}'
 ;
 ```
 </TabItem>
+
 <TabItem value="manifest">
 
 ```yaml
 - name: notification_integrations
   props:
-  - name: data__name
-    value: string
-  - name: data__notification_hook
-    value: string
-  - name: endpoint
-    value: string
+    - name: data__name
+      value: string
+    - name: data__notification_hook
+      value: string
+    - name: endpoint
+      value: string
+    - name: name
+      value: string
+    - name: enabled
+      value: boolean
+    - name: comment
+      value: string
+    - name: notification_hook
+      props:
+        - name: type
+          value: string
 
 ```
 </TabItem>
@@ -103,5 +142,6 @@ Deletes the specified <code>notification_integrations</code> resource.
 ```sql
 /*+ delete */
 DELETE FROM snowflake.notification_integration.notification_integrations
-WHERE name = '{ name }' AND endpoint = '{ endpoint }';
+WHERE name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
 ```

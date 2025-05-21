@@ -200,10 +200,10 @@ table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables,get,Table,table,
 table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name},delete,,table,table,tables,delete_table,delete,deleteTable
 table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name},put,,table,table,tables,create_or_alter_table,replace,createOrAlterTable
 table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name},get,Table,table,table,tables,fetch_table,select,fetchTable
-table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name}:as_select,post,,table,table,tables,create_table_as_select_deprecated,insert,createTableAsSelectDeprecated
+table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name}:as_select,post,,table,table,tables,create_table_as_select_deprecated,,createTableAsSelectDeprecated
 table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name}:clone,post,,table,table,tables,clone_table,,cloneTable
-table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name}:create_like,post,,table,table,tables,create_table_like_deprecated,insert,createTableLikeDeprecated
-table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name}:create-like,post,,table,table,tables,create_table_like,insert,createTableLike
+table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name}:create_like,post,,table,table,tables,create_table_like_deprecated,,createTableLikeDeprecated
+table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name}:create-like,post,,table,table,tables,create_table_like,,createTableLike
 table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name}:resume_recluster,post,,table,table,tables,resume_recluster_table_deprecated,,resumeReclusterTableDeprecated
 table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name}:resume-recluster,post,,table,table,tables,resume_recluster_table,,resumeReclusterTable
 table.yaml,/api/v2/databases/{database}/schemas/{schema}/tables/{name}:suspend_recluster,post,,table,table,tables,suspend_recluster_table_deprecated,,suspendReclusterTableDeprecated
