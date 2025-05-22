@@ -300,6 +300,77 @@ ${codeBlockEnd}`;
 const readOnlyPropertyNames = [
 ];
 
+// function getSchemaManifest(resourceName, requiredParams, requestBodySchema) {
+//     const allProps = [];
+
+//     // Helper function to recursively process properties in the schema
+//     function processProperties(properties) {
+//         const result = [];
+
+//         Object.entries(properties).forEach(([key, prop]) => {
+//             // Handle `allOf` by merging properties
+//             if (prop.allOf) {
+//                 prop = prop.allOf.reduce((acc, item) => ({
+//                     ...acc,
+//                     ...item,
+//                     properties: {
+//                         ...acc.properties,
+//                         ...item.properties
+//                     },
+//                     required: Array.from(new Set([...(acc.required || []), ...(item.required || [])]))
+//                 }), {});
+//             }
+
+//             // Exclude readOnly properties
+//             if (prop.readOnly) return;
+
+//             // Determine the property type or default to "string"
+//             const type = prop.type || "string";
+
+//             // Handle nested objects recursively
+//             if (type === "object" && prop.properties) {
+//                 result.push({
+//                     name: key,
+//                     props: processProperties(prop.properties)
+//                 });
+//             } else if (type === "array" && prop.items && prop.items.type === "object" && prop.items.properties) {
+//                 // If array of objects, process items properties as nested props
+//                 result.push({
+//                     name: key,
+//                     value: "array",
+//                     props: processProperties(prop.items.properties)
+//                 });
+//             } else {
+//                 // Simple property or array of non-objects
+//                 result.push({
+//                     name: key,
+//                     value: type
+//                 });
+//             }
+//         });
+
+//         return result;
+//     }
+
+//     // Add requiredParams as simple properties
+//     requiredParams.forEach(param => {
+//         allProps.push({
+//             name: param,
+//             value: "string"
+//         });
+//     });
+
+//     // Process requestBodySchema properties and add to allProps
+//     if (requestBodySchema?.properties) {
+//         allProps.push(...processProperties(requestBodySchema.properties));
+//     }
+
+//     return [{
+//         name: resourceName,
+//         props: allProps
+//     }];
+// }
+
 function getSchemaManifest(resourceName, requiredParams, requestBodySchema) {
     const allProps = [];
 
@@ -329,16 +400,17 @@ function getSchemaManifest(resourceName, requiredParams, requestBodySchema) {
 
             // Handle nested objects recursively
             if (type === "object" && prop.properties) {
+                const nestedProps = processProperties(prop.properties);
                 result.push({
                     name: key,
-                    props: processProperties(prop.properties)
+                    value: nestedProps
                 });
             } else if (type === "array" && prop.items && prop.items.type === "object" && prop.items.properties) {
-                // If array of objects, process items properties as nested props
+                // If array of objects, process items properties as nested value
+                const nestedProps = processProperties(prop.items.properties);
                 result.push({
                     name: key,
-                    value: "array",
-                    props: processProperties(prop.items.properties)
+                    value: nestedProps
                 });
             } else {
                 // Simple property or array of non-objects
