@@ -97,6 +97,13 @@ Run some test queries
 
 ### 7. Generate web docs
 
+Start a local `stackql` server:
+
+```bash
+sh start-stackql-server.sh
+```
+then run...
+
 ```bash
 doc_gen/bin/generate_md_docs snowflake
 ```

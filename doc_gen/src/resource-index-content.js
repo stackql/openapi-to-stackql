@@ -178,13 +178,22 @@ Creates, updates, deletes, gets or lists a <code>${resourceName}</code> resource
         }
     }
 
-    content += '\n## Methods\n| Name | Accessible by | Required Params | Description |\n|:-----|:--------------|:----------------|:------------|\n';
+    content += '\n## Methods\n| Name | Accessible by | Required Params | Optional Params | Description |\n|:-----|:--------------|:----------------|:----------------|:------------|\n';
 
     // Append methods
     methods.forEach(method => {
         const sqlVerb = method.SQLVerb;
-        content += `| <CopyableCode code="${method.MethodName}" /> | ${mdCodeAnchor}${sqlVerb}${mdCodeAnchor} | <CopyableCode code="${method.RequiredParams}" /> | ${cleanDescription(method.description)} |\n`;
-    });
+        const optionalParams = getOptionalParams(method.MethodName, resourceData, dereferencedAPI);
+        content += `| <CopyableCode code="${method.MethodName}" /> | ${mdCodeAnchor}${sqlVerb}${mdCodeAnchor} | <CopyableCode code="${method.RequiredParams}" /> | ${optionalParams || '-'} | ${cleanDescription(method.description)} |\n`;
+    });    
+
+    content += '<br />'
+
+    // Add optional parameters details section
+    const optionalParamsDetails = getOptionalParamsDetails(methods, resourceData, dereferencedAPI);
+    if (optionalParamsDetails) {
+        content += '\n' + optionalParamsDetails;
+    }
 
     // Append SQL examples for each SQL verb
     const sqlVerbs = ['SELECT', 'INSERT', 'UPDATE', 'REPLACE', 'DELETE'];
@@ -723,7 +732,6 @@ ${codeBlockEnd}
     }
 }
 
-
 function generateDeleteExample(providerName, serviceName, resourceName, method) {
     return `
 ## ${mdCodeAnchor}DELETE${mdCodeAnchor} example
@@ -738,3 +746,109 @@ ${codeBlockEnd}
 `;
 }
 
+function getOptionalParams(methodName, resourceData, dereferencedAPI) {
+    try {
+        // Get the operation reference for this method
+        const operationRef = resourceData.methods[methodName]?.operation?.$ref;
+        if (!operationRef) {
+            return '';
+        }
+
+        // Parse the operation reference to get path and verb
+        const operationPathParts = operationRef.replace('#/paths/', '').replace(/~1/g, '/').split('/');
+        const operationVerb = operationPathParts.pop();
+        const operationPath = operationPathParts.join('/');
+
+        // Find the operation in the dereferenced API
+        let pathObj = dereferencedAPI.paths[operationPath];
+        if (!pathObj) {
+            pathObj = Object.entries(dereferencedAPI.paths).find(([key]) => key === operationPath)?.[1];
+        }
+
+        if (!pathObj || !pathObj[operationVerb] || !pathObj[operationVerb].parameters) {
+            return '';
+        }
+
+        // Extract query parameters that are NOT required (these are optional params)
+        const queryParams = pathObj[operationVerb].parameters
+            .filter(param => param.in === 'query' && !param.required)
+            .map(param => `<CopyableCode code="${param.name}" />`)
+            .join(', ');
+
+        return queryParams;
+    } catch (error) {
+        console.log(`Error getting optional params for ${methodName}:`, error);
+        return '';
+    }
+}
+
+function getOptionalParamsDetails(methods, resourceData, dereferencedAPI) {
+    try {
+        const allOptionalParams = new Map(); // Use Map to avoid duplicates
+
+        methods.forEach(method => {
+            // Get the operation reference for this method
+            const operationRef = resourceData.methods[method.MethodName]?.operation?.$ref;
+            if (!operationRef) {
+                return;
+            }
+
+            // Parse the operation reference to get path and verb
+            const operationPathParts = operationRef.replace('#/paths/', '').replace(/~1/g, '/').split('/');
+            const operationVerb = operationPathParts.pop();
+            const operationPath = operationPathParts.join('/');
+
+            // Find the operation in the dereferenced API
+            let pathObj = dereferencedAPI.paths[operationPath];
+            if (!pathObj) {
+                pathObj = Object.entries(dereferencedAPI.paths).find(([key]) => key === operationPath)?.[1];
+            }
+
+            if (!pathObj || !pathObj[operationVerb] || !pathObj[operationVerb].parameters) {
+                return;
+            }
+
+            // Extract query parameters that are NOT required, with their details
+            pathObj[operationVerb].parameters
+                .filter(param => param.in === 'query' && !param.required)
+                .forEach(param => {
+                    if (!allOptionalParams.has(param.name)) {
+                        allOptionalParams.set(param.name, {
+                            name: param.name,
+                            description: param.description || '-',
+                            type: param.schema?.type || '-',
+                            default: param.schema?.default !== undefined ? String(param.schema.default) : '-'
+                        });
+                    }
+                });
+        });
+
+        if (allOptionalParams.size === 0) {
+            return '';
+        }
+
+        let detailsContent = `
+<details>
+<summary>Optional Parameter Details</summary>
+
+| Name | Description | Type | Default |
+|------|-------------|------|---------|
+`;
+
+        // Sort parameters alphabetically by name
+        const sortedParams = Array.from(allOptionalParams.values()).sort((a, b) => a.name.localeCompare(b.name));
+
+        sortedParams.forEach(param => {
+            detailsContent += `| <CopyableCode code="${param.name}" /> | ${cleanDescription(param.description)} | ${mdCodeAnchor}${param.type}${mdCodeAnchor} | ${mdCodeAnchor}${param.default}${mdCodeAnchor} |\n`;
+        });
+
+        detailsContent += `
+</details>
+`;
+
+        return detailsContent;
+    } catch (error) {
+        console.log('Error getting optional params details:', error);
+        return '';
+    }
+}
