@@ -74,8 +74,16 @@ Creates, updates, deletes, gets or lists a <code>streams</code> resource.
 
 ## `SELECT` examples
 
-List streams
+<Tabs
+    defaultValue="list_streams"
+    values={[
+        { label: 'list_streams', value: 'list_streams' },
+        { label: 'fetch_stream', value: 'fetch_stream' }
+    ]
+}>
+<TabItem value="list_streams">
 
+List streams
 
 ```sql
 SELECT
@@ -98,6 +106,36 @@ WHERE database_name = '{{ database_name }}'
 AND schema_name = '{{ schema_name }}'
 AND endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_stream">
+
+Fetch a stream
+
+```sql
+SELECT
+name,
+comment,
+created_on,
+database_name,
+invalid_reason,
+mode,
+owner,
+owner_role_type,
+schema_name,
+stale,
+stale_after,
+stream_source,
+table_name,
+type
+FROM snowflake.streams.streams
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>streams</code> resource.
@@ -157,6 +195,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: streams
   props:
     - name: database_name
@@ -171,19 +210,28 @@ SELECT
       value: string
     - name: name
       value: string
+      description: Name of the stream
     - name: stream_source
       value:
         - name: src_type
           value: string
+          description: 'Type of the source. Possible values include: stream, table, view'
         - name: name
           value: string
+          description: Name of the source whose changes are tracked by the stream
         - name: database_name
           value: string
+          description: >-
+            Database name to which stream source type belongs. If not provided,
+            database name provided in the path param will be used.
         - name: schema_name
           value: string
+          description: >-
+            Schema name to which stream source type belongs. If not provided,
+            schema name provided in the path param will be used.
     - name: comment
       value: string
-
+      description: user comment associated to an object in the dictionary
 ```
 </TabItem>
 </Tabs>

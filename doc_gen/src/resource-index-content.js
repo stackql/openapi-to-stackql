@@ -212,39 +212,141 @@ Creates, updates, deletes, gets or lists a <code>${resourceName}</code> resource
 
     // Append SQL examples for each SQL verb
     const sqlVerbs = ['SELECT', 'INSERT', 'UPDATE', 'REPLACE', 'DELETE'];
+
     sqlVerbs.forEach(sqlVerb => {
         const relevantMethods = methods.filter(method => method.SQLVerb === sqlVerb);
 
         if (relevantMethods.length === 0) return;
 
-        const exampleMethod = relevantMethods.sort((a, b) => a.RequiredParams.length - b.RequiredParams.length)[0];
-
         switch (sqlVerb) {
             case 'SELECT':
-                content += generateSelectExample(providerName, serviceName, resourceName, vwResourceName, exampleMethod, fields, vwFields);
+                // Pass all SELECT methods for overloaded handling
+                const exampleMethod = relevantMethods.sort((a, b) => a.RequiredParams.length - b.RequiredParams.length)[0];
+                content += generateSelectExample(providerName, serviceName, resourceName, vwResourceName, exampleMethod, fields, vwFields, relevantMethods);
                 break;
             case 'INSERT':
-                content += generateInsertExample(providerName, serviceName, resourceName, resourceData, dereferencedAPI, exampleMethod);
+                const insertMethod = relevantMethods.sort((a, b) => a.RequiredParams.length - b.RequiredParams.length)[0];
+                content += generateInsertExample(providerName, serviceName, resourceName, resourceData, dereferencedAPI, insertMethod);
                 break;
             case 'UPDATE':
-                content += generateUpdateExample(providerName, serviceName, resourceName, resourceData, dereferencedAPI, exampleMethod);
+                const updateMethod = relevantMethods.sort((a, b) => a.RequiredParams.length - b.RequiredParams.length)[0];
+                content += generateUpdateExample(providerName, serviceName, resourceName, resourceData, dereferencedAPI, updateMethod);
                 break;
             case 'REPLACE':
-                content += generateUpdateExample(providerName, serviceName, resourceName, resourceData, dereferencedAPI, exampleMethod, true);                
+                const replaceMethod = relevantMethods.sort((a, b) => a.RequiredParams.length - b.RequiredParams.length)[0];
+                content += generateUpdateExample(providerName, serviceName, resourceName, resourceData, dereferencedAPI, replaceMethod, true);                
                 break;
             case 'DELETE':
-                content += generateDeleteExample(providerName, serviceName, resourceName, exampleMethod);
+                const deleteMethod = relevantMethods.sort((a, b) => a.RequiredParams.length - b.RequiredParams.length)[0];
+                content += generateDeleteExample(providerName, serviceName, resourceName, deleteMethod);
                 break;
         }
     });
 
-    // Write the content to a file
     return content;
 
 }
 
-function generateSelectExample(providerName, serviceName, resourceName, vwResourceName, method, fields, vwFields) {
+function generateSelectExample(providerName, serviceName, resourceName, vwResourceName, exampleMethod, fields, vwFields, allSelectMethods = []) {
+    // If only one SELECT method, use the original behavior
+    if (allSelectMethods.length <= 1) {
+        return generateSingleSelectExample(providerName, serviceName, resourceName, vwResourceName, exampleMethod, fields, vwFields);
+    }
 
+    // Multiple SELECT methods - use tabs for overloaded methods
+    let retSelectStmt = `
+## ${mdCodeAnchor}SELECT${mdCodeAnchor} examples
+
+`;
+
+    // Build tab configuration for overloaded SELECT methods
+    const selectTabs = allSelectMethods.map(method => ({
+        label: method.MethodName,
+        value: method.MethodName
+    }));
+
+    retSelectStmt += `<Tabs
+    defaultValue="${allSelectMethods[0].MethodName}"
+    values={[
+${selectTabs.map(tab => `        { label: '${tab.label}', value: '${tab.value}' }`).join(',\n')}
+    ]
+}>
+`;
+
+    // Generate content for each SELECT method tab
+    allSelectMethods.forEach(method => {
+        retSelectStmt += `<TabItem value="${method.MethodName}">
+
+${cleanDescription(method.description)}
+
+`;
+
+        // Check if there is a view resource, use nested tabs if so
+        if (vwFields.length > 0) {
+            retSelectStmt += `<Tabs
+    defaultValue="view"
+    values={[
+        { label: '${vwResourceName}', value: 'view', },
+        { label: '${resourceName}', value: 'resource', },
+    ]
+}>
+<TabItem value="view">
+
+`;
+            // Map over the fields array to create a list of column names
+            const vwSelectColumns = vwFields.map(field => field.name).join(',\n');
+
+            // Check if there are required parameters for this specific method
+            const vwWhereClause = method.RequiredParams
+                ? `WHERE ${method.RequiredParams.split(', ').map(param => `${param} = '{{ ${param} }}'`).join('\nAND ')}`
+                : '';
+
+            retSelectStmt += `${sqlCodeBlockStart}
+SELECT
+${vwSelectColumns}
+FROM ${providerName}.${serviceName}.${vwResourceName}
+${vwWhereClause};
+${codeBlockEnd}
+
+</TabItem>
+<TabItem value="resource">
+
+`;
+        }
+
+        // resource sql for this specific method
+        const selectColumns = fields.map(field => field.name).join(',\n');
+
+        // Check if there are required parameters for this specific method
+        const whereClause = method.RequiredParams
+            ? `WHERE ${method.RequiredParams.split(', ').map(param => `${param} = '{{ ${param} }}'`).join('\nAND ')}`
+            : '';
+
+        retSelectStmt += `${sqlCodeBlockStart}
+SELECT
+${selectColumns}
+FROM ${providerName}.${serviceName}.${resourceName}
+${whereClause};
+${codeBlockEnd}`;
+
+        if (vwFields.length > 0) {
+            retSelectStmt += `
+</TabItem>
+</Tabs>`;
+        }
+
+        retSelectStmt += `
+</TabItem>
+`;
+    });
+
+    retSelectStmt += `</Tabs>
+`;
+
+    return retSelectStmt;
+}
+
+function generateSingleSelectExample(providerName, serviceName, resourceName, vwResourceName, method, fields, vwFields) {
     // heading and preamble
     let retSelectStmt = `
 ## ${mdCodeAnchor}SELECT${mdCodeAnchor} examples
@@ -342,33 +444,41 @@ function getSchemaManifest(resourceName, requiredParams, requestBodySchema) {
             // Determine the property type or default to "string"
             const type = prop.type || "string";
 
+            // Create base property object with name and value
+            const baseProperty = {
+                name: key,
+                value: type
+            };
+
+            // Add description if available
+            if (prop.description && prop.description.trim()) {
+                baseProperty.description = cleanDescription(prop.description);
+            }
+
             // Handle nested objects recursively
             if (type === "object" && prop.properties) {
                 const nestedProps = processProperties(prop.properties);
                 result.push({
-                    name: key,
+                    ...baseProperty,
                     value: nestedProps
                 });
             } else if (type === "array" && prop.items && prop.items.type === "object" && prop.items.properties) {
                 // If array of objects, process items properties as nested value
                 const nestedProps = processProperties(prop.items.properties);
                 result.push({
-                    name: key,
+                    ...baseProperty,
                     value: nestedProps
                 });
             } else {
                 // Simple property or array of non-objects
-                result.push({
-                    name: key,
-                    value: type
-                });
+                result.push(baseProperty);
             }
         });
 
         return result;
     }
 
-    // Add requiredParams as simple properties
+    // Add requiredParams as simple properties (these typically don't have descriptions in the schema)
     requiredParams.forEach(param => {
         allProps.push({
             name: param,
@@ -613,11 +723,13 @@ function generateInsertExample(
         // Check if 'Required Properties' tab should be added
         const shouldAddRequiredTab = requiredInsertFields.length > 0 && requiredInsertFields.length !== allInsertFields.length;
 
-        // Pass the processed schema to getSchemaManifest
         const yamlManifest = yaml.dump(
             getSchemaManifest(resourceName, requiredParams, requestBodySchema),
-            { quotingType: "'", lineWidth: -1, noRefs: true, skipInvalid: true }
+            { quotingType: "'", lineWidth: 80, noRefs: true, skipInvalid: true }
         );
+
+        const yamlWithComment = `# Description fields below are for documentation purposes only and are not required in the manifest
+${yamlManifest.trim()}`;
 
         return `
 ## ${mdCodeAnchor}INSERT${mdCodeAnchor} example
@@ -661,7 +773,7 @@ ${codeBlockEnd}
 <TabItem value="manifest">
 
 ${yamlCodeBlockStart}
-${yamlManifest}
+${yamlWithComment}
 ${codeBlockEnd}
 </TabItem>
 </Tabs>

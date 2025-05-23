@@ -77,8 +77,16 @@ Creates, updates, deletes, gets or lists a <code>user_defined_functions</code> r
 
 ## `SELECT` examples
 
-List UDFs
+<Tabs
+    defaultValue="list_user_defined_functions"
+    values={[
+        { label: 'list_user_defined_functions', value: 'list_user_defined_functions' },
+        { label: 'fetch_user_defined_function', value: 'fetch_user_defined_function' }
+    ]
+}>
+<TabItem value="list_user_defined_functions">
 
+List UDFs
 
 ```sql
 SELECT
@@ -107,6 +115,42 @@ WHERE database_name = '{{ database_name }}'
 AND schema_name = '{{ schema_name }}'
 AND endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_user_defined_function">
+
+Fetch a UDF
+
+```sql
+SELECT
+name,
+arguments,
+body,
+comment,
+created_on,
+database_name,
+is_aggregate,
+is_builtin,
+is_memoizable,
+is_secure,
+is_table_function,
+is_temporary,
+language_config,
+max_num_arguments,
+min_num_arguments,
+owner,
+owner_role_type,
+return_type,
+schema_name,
+valid_for_clustering
+FROM snowflake.user_defined_function.user_defined_functions
+WHERE database_name = '{{ database_name }}'
+AND nameWithArgs = '{{ nameWithArgs }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>user_defined_functions</code> resource.
@@ -184,6 +228,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: user_defined_functions
   props:
     - name: database_name
@@ -202,39 +247,67 @@ SELECT
       value: string
     - name: name
       value: string
+      description: The name of the UDF
     - name: is_temporary
       value: boolean
+      description: Specifies whether the UDF is temporary or not
     - name: is_aggregate
       value: boolean
+      description: >-
+        Specifies whether the UDF is an aggregate function. Applicable only for
+        Python language type
     - name: is_memoizable
       value: boolean
+      description: >-
+        Indicates whether the function is memoizable. Applicable only for Python
+        language type.
     - name: is_secure
       value: boolean
+      description: Specifies whether the function/procedure is secure or not
     - name: arguments
       value:
         - name: name
           value: string
+          description: Argument name
         - name: datatype
           value: string
+          description: Argument data type
         - name: default_value
           value: string
+          description: Default value of the argument
+      description: List of arguments for the function/procedure
     - name: return_type
       value:
         - name: type
           value: string
+          description: Type of the return, can be either DATATYPE or TABLE
     - name: language_config
       value:
         - name: language
           value: string
+          description: >-
+            Language that the function/procedure is written in. Possible values
+            include: JAVA, JAVASCRIPT, PYTHON, SCALA, SQL
         - name: called_on_null_input
           value: boolean
+          description: Decide if the function/procedure can receive null input
         - name: is_volatile
           value: boolean
+          description: >-
+            Specifies the behavior of the UDF when returning results. This Field
+            is deprecated for Procedure. If true, UDF might return different
+            values for different rows, even for the same input. This field is
+            deprecated for Procedure. If false, UDF assumes that the function,
+            when called with the same inputs, will always return the same
+            result. This guarantee is not checked. Specifying IMMUTABLE for a
+            UDF that returns different values for the same input will result in
+            undefined behavior.
     - name: comment
       value: string
+      description: Specifies a comment for the function/procedure
     - name: body
       value: string
-
+      description: Function/procedure definition
 ```
 </TabItem>
 </Tabs>

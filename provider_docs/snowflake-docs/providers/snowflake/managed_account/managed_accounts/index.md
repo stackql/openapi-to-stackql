@@ -141,6 +141,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: managed_accounts
   props:
     - name: data__account_type
@@ -155,15 +156,22 @@ SELECT
       value: string
     - name: name
       value: string
+      description: >-
+        A Snowflake object identifier. If the identifier contains spaces or
+        special characters, the entire string must be enclosed in double quotes.
+        Identifiers enclosed in double quotes are also case-sensitive.
     - name: comment
       value: string
+      description: Optional comment in which to store information related to the account.
     - name: admin_name
       value: string
+      description: Name of the account administrator.
     - name: admin_password
       value: string
+      description: Password for the account administrator.
     - name: account_type
       value: string
-
+      description: Type of the account.
 ```
 </TabItem>
 </Tabs>

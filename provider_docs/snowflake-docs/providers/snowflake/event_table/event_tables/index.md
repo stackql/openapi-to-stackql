@@ -79,8 +79,16 @@ Creates, updates, deletes, gets or lists a <code>event_tables</code> resource.
 
 ## `SELECT` examples
 
-List event tables
+<Tabs
+    defaultValue="list_event_tables"
+    values={[
+        { label: 'list_event_tables', value: 'list_event_tables' },
+        { label: 'fetch_event_table', value: 'fetch_event_table' }
+    ]
+}>
+<TabItem value="list_event_tables">
 
+List event tables
 
 ```sql
 SELECT
@@ -108,6 +116,41 @@ WHERE database_name = '{{ database_name }}'
 AND schema_name = '{{ schema_name }}'
 AND endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_event_table">
+
+Fetch an event table
+
+```sql
+SELECT
+name,
+automatic_clustering,
+bytes,
+change_tracking,
+cluster_by,
+columns,
+comment,
+created_on,
+data_retention_time_in_days,
+database_name,
+default_ddl_collation,
+max_data_extension_time_in_days,
+owner,
+owner_role_type,
+rows,
+schema_name,
+search_optimization,
+search_optimization_bytes,
+search_optimization_progress
+FROM snowflake.event_table.event_tables
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>event_tables</code> resource.
@@ -173,6 +216,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: event_tables
   props:
     - name: database_name
@@ -185,19 +229,31 @@ SELECT
       value: string
     - name: name
       value: string
+      description: Name of the event table
     - name: cluster_by
       value: array
+      description: Cluster key column(s) or expression
     - name: data_retention_time_in_days
       value: integer
+      description: number of days to retain the old version of deleted/updated data
     - name: max_data_extension_time_in_days
       value: integer
+      description: >-
+        Maximum number of days to extend data retention beyond the retention
+        period to prevent a stream becoming stale.
     - name: change_tracking
       value: boolean
+      description: >-
+        True if change tracking is enabled, allowing streams and CHANGES to be
+        used on the entity.
     - name: default_ddl_collation
       value: string
+      description: >-
+        Collation that is used for all the new columns created by the DDL
+        statements (if not specified)
     - name: comment
       value: string
-
+      description: user comment associated to an object in the dictionary
 ```
 </TabItem>
 </Tabs>

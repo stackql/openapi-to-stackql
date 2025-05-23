@@ -128,6 +128,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: grants
   props:
     - name: name
@@ -140,21 +141,27 @@ SELECT
       value:
         - name: database
           value: string
+          description: Database name of the securable if applicable.
         - name: schema
           value: string
+          description: Schema name of the securable if applicable.
         - name: name
           value: string
+          description: Name of the securable if applicable.
     - name: containing_scope
       value:
         - name: database
           value: string
+          description: Database name of the securable scope if applicable.
         - name: schema
           value: string
+          description: Schema name of the securable scope if applicable.
     - name: securable_type
       value: string
+      description: Type of the securable to be granted. Only ROLE is supported
     - name: privileges
       value: array
-
+      description: List of privileges to be granted.
 ```
 </TabItem>
 </Tabs>

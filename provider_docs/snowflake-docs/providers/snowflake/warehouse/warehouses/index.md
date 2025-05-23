@@ -101,8 +101,16 @@ Creates, updates, deletes, gets or lists a <code>warehouses</code> resource.
 
 ## `SELECT` examples
 
-Show a list of warehouse filtered by pattern. Equivalent to SHOW WAREHOUSE in SQL.
+<Tabs
+    defaultValue="list_warehouses"
+    values={[
+        { label: 'list_warehouses', value: 'list_warehouses' },
+        { label: 'fetch_warehouse', value: 'fetch_warehouse' }
+    ]
+}>
+<TabItem value="list_warehouses">
 
+Show a list of warehouse filtered by pattern. Equivalent to SHOW WAREHOUSE in SQL.
 
 ```sql
 SELECT
@@ -147,6 +155,58 @@ warehouse_type
 FROM snowflake.warehouse.warehouses
 WHERE endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_warehouse">
+
+Describes the warehouse, show information of the chosen warehouse. Equivalent to DESCRIBE WAREHOUSE in SQL.
+
+```sql
+SELECT
+name,
+auto_resume,
+auto_suspend,
+available,
+budget,
+comment,
+created_on,
+enable_query_acceleration,
+initially_suspended,
+is_current,
+is_default,
+kind,
+max_cluster_count,
+max_concurrency_level,
+min_cluster_count,
+other,
+owner,
+owner_role_type,
+provisioning,
+query_acceleration_max_scale_factor,
+queued,
+quiescing,
+resource_monitor,
+resumed_on,
+running,
+scaling_policy,
+size,
+started_clusters,
+state,
+statement_queued_timeout_in_seconds,
+statement_timeout_in_seconds,
+target_statement_size,
+type,
+updated_on,
+wait_for_completion,
+warehouse_credit_limit,
+warehouse_size,
+warehouse_type
+FROM snowflake.warehouse.warehouses
+WHERE name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>warehouses</code> resource.
@@ -232,6 +292,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: warehouses
   props:
     - name: data__name
@@ -240,47 +301,101 @@ SELECT
       value: string
     - name: name
       value: string
+      description: >-
+        A Snowflake object identifier. If the identifier contains spaces or
+        special characters, the entire string must be enclosed in double quotes.
+        Identifiers enclosed in double quotes are also case-sensitive.
     - name: warehouse_type
       value: string
+      description: 'Type of warehouse, possible types: STANDARD, SNOWPARK-OPTIMIZED'
     - name: warehouse_size
       value: string
+      description: >-
+        Size of warehouse, possible sizes: XSMALL, SMALL, MEDIUM, LARGE, XLARGE,
+        XXLARGE, XXXLARGE, X4LARGE, X5LARGE, X6LARGE
     - name: wait_for_completion
       value: string
+      description: >-
+        When resizing a warehouse, you can use this parameter to block the
+        return of the ALTER WAREHOUSE command until the resize has finished
+        provisioning all its compute resources
     - name: max_cluster_count
       value: integer
+      description: Specifies the maximum number of clusters for a multi-cluster warehouse
     - name: min_cluster_count
       value: integer
+      description: Specifies the minimum number of clusters for a multi-cluster warehouse
     - name: scaling_policy
       value: string
+      description: >-
+        Scaling policy of warehouse, possible scaling policies: STANDARD,
+        ECONOMY
     - name: auto_suspend
       value: integer
+      description: time in seconds before auto suspend
     - name: auto_resume
       value: string
+      description: >-
+        Specifies whether to automatically resume a warehouse when a SQL
+        statement is submitted to it
     - name: initially_suspended
       value: string
+      description: >-
+        Specifies whether the warehouse is created initially in the Suspended
+        state
     - name: resource_monitor
       value: string
+      description: >-
+        A Snowflake object identifier. If the identifier contains spaces or
+        special characters, the entire string must be enclosed in double quotes.
+        Identifiers enclosed in double quotes are also case-sensitive.
     - name: comment
       value: string
+      description: Specifies a comment for the warehouse
     - name: enable_query_acceleration
       value: string
+      description: >-
+        Specifies whether to enable the query acceleration service for queries
+        that rely on this warehouse for compute resources
     - name: query_acceleration_max_scale_factor
       value: integer
+      description: >-
+        Specifies the maximum scale factor for leasing compute resources for
+        query acceleration. The scale factor is used as a multiplier based on
+        warehouse size
     - name: max_concurrency_level
       value: integer
+      description: >-
+        Object parameter that specifies the concurrency level for SQL statements
+        executed by a warehouse cluster
     - name: statement_queued_timeout_in_seconds
       value: integer
+      description: >-
+        Object parameter that specifies the time, in seconds, a SQL statement
+        can be queued on a warehouse before it is canceled by the system
     - name: statement_timeout_in_seconds
       value: integer
+      description: >-
+        Object parameter that specifies the time, in seconds, after which a
+        running SQL statement is canceled by the system
     - name: type
       value: string
+      description: >-
+        [Deprecated] Type of warehouse, possible types: STANDARD,
+        SNOWPARK-OPTIMIZED
     - name: size
       value: string
+      description: >-
+        [Deprecated] names of size: X-Small, Small, Medium, Large, X-Large,
+        2X-Large, 3X-Large, 4X-Large, 5X-Large, 6X-Large
     - name: warehouse_credit_limit
       value: integer
+      description: Credit limit that are can be executed by the warehouse.
     - name: target_statement_size
       value: string
-
+      description: >-
+        Names of size: X-Small, Small, Medium, Large, X-Large, 2X-Large,
+        3X-Large, 4X-Large, 5X-Large, 6X-Large
 ```
 </TabItem>
 </Tabs>

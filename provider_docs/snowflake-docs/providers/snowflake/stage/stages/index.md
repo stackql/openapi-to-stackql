@@ -71,8 +71,16 @@ Creates, updates, deletes, gets or lists a <code>stages</code> resource.
 
 ## `SELECT` examples
 
-Lists stages under the database and schema, with show options as query parameters.
+<Tabs
+    defaultValue="list_stages"
+    values={[
+        { label: 'list_stages', value: 'list_stages' },
+        { label: 'fetch_stage', value: 'fetch_stage' }
+    ]
+}>
+<TabItem value="list_stages">
 
+Lists stages under the database and schema, with show options as query parameters.
 
 ```sql
 SELECT
@@ -97,6 +105,38 @@ WHERE database_name = '{{ database_name }}'
 AND schema_name = '{{ schema_name }}'
 AND endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_stage">
+
+Fetch a stage using the describe command output.
+
+```sql
+SELECT
+name,
+cloud,
+comment,
+created_on,
+credentials,
+directory_table,
+encryption,
+endpoint,
+has_credentials,
+has_encryption_key,
+kind,
+owner,
+owner_role_type,
+region,
+storage_integration,
+url
+FROM snowflake.stage.stages
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>stages</code> resource.
@@ -165,6 +205,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: stages
   props:
     - name: database_name
@@ -177,39 +218,78 @@ SELECT
       value: string
     - name: name
       value: string
+      description: >-
+        A Snowflake object identifier. If the identifier contains spaces or
+        special characters, the entire string must be enclosed in double quotes.
+        Identifiers enclosed in double quotes are also case-sensitive.
     - name: kind
       value: string
+      description: Specifies whether the stage is permanent or temporary.
     - name: url
       value: string
+      description: URL for the external stage; blank for an internal stage.
     - name: endpoint
       value: string
+      description: >-
+        The S3-compatible API endpoint associated with the stage; always NULL
+        for stages that are not S3-compatible.
     - name: storage_integration
       value: string
+      description: >-
+        A Snowflake object identifier. If the identifier contains spaces or
+        special characters, the entire string must be enclosed in double quotes.
+        Identifiers enclosed in double quotes are also case-sensitive.
     - name: comment
       value: string
+      description: Specifies a comment for the stage.
     - name: credentials
       value:
         - name: credential_type
           value: string
+          description: Type of the credential, can be either AWS or AZURE.
+      description: Specifies the credentials of the stage.
     - name: encryption
       value:
         - name: type
           value: string
+          description: Specifies the encryption type used.
         - name: master_key
           value: string
+          description: >-
+            Specifies the client-side master key used to encrypt the files in
+            the bucket. The master key must be a 128-bit or 256-bit key in
+            Base64-encoded form.
         - name: kms_key_id
           value: string
+          description: >-
+            Optionally specifies the ID for the KMS-managed key used to encrypt
+            files unloaded into the bucket.
+      description: Encryption parameters of the stage.
     - name: directory_table
       value:
         - name: enable
           value: boolean
+          description: >-
+            Specifies whether to add a directory table to the stage. When the
+            value is TRUE, a directory table is created with the stage.
         - name: refresh_on_create
           value: boolean
+          description: >-
+            Specifies whether to automatically refresh the directory table
+            metadata once, immediately after the stage is created.
         - name: auto_refresh
           value: boolean
+          description: >-
+            Specifies whether Snowflake should enable triggering automatic
+            refreshes of the directory table metadata when new or updated data
+            files are available in the named external stage specified in the URL
+            value.
         - name: notification_integration
           value: string
-
+          description: >-
+            Specifies the name of the notification integration used to
+            automatically refresh the directory table metadata.
+      description: Directory table parameters of the stage.
 ```
 </TabItem>
 </Tabs>

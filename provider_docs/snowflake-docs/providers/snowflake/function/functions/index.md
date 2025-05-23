@@ -65,8 +65,16 @@ Creates, updates, deletes, gets or lists a <code>functions</code> resource.
 
 ## `SELECT` examples
 
-Lists the user functions under the database and schema.
+<Tabs
+    defaultValue="list_functions"
+    values={[
+        { label: 'list_functions', value: 'list_functions' },
+        { label: 'fetch_function', value: 'fetch_function' }
+    ]
+}>
+<TabItem value="list_functions">
 
+Lists the user functions under the database and schema.
 
 ```sql
 SELECT
@@ -84,6 +92,31 @@ WHERE database_name = '{{ database_name }}'
 AND schema_name = '{{ schema_name }}'
 AND endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_function">
+
+Fetch a Function using the describe command output.
+
+```sql
+SELECT
+name,
+arguments,
+body,
+created_on,
+function_type,
+language,
+max_batch_rows,
+returns,
+signature
+FROM snowflake.function.functions
+WHERE database_name = '{{ database_name }}'
+AND nameWithArgs = '{{ nameWithArgs }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>functions</code> resource.
@@ -155,6 +188,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: functions
   props:
     - name: database_name
@@ -171,27 +205,38 @@ SELECT
       value: string
     - name: name
       value: string
+      description: >-
+        Specifies the name for the function, must be unique for the schema in
+        which the function is created
     - name: arguments
       value:
         - name: name
           value: string
+          description: Argument's name
         - name: datatype
           value: string
+          description: Argument's type
         - name: value
           value: string
+          description: Argument's value
     - name: returns
       value: string
+      description: Specifies the type for the function return value.
     - name: max_batch_rows
       value: integer
+      description: Specifies the max rows for batch operation.
     - name: created_on
       value: string
+      description: Date and time when the function was created.
     - name: signature
       value: string
+      description: Function's arguments.
     - name: language
       value: string
+      description: Function's language.
     - name: body
       value: string
-
+      description: Function's body.
 ```
 </TabItem>
 </Tabs>

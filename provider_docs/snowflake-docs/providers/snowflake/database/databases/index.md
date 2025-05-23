@@ -97,8 +97,16 @@ Creates, updates, deletes, gets or lists a <code>databases</code> resource.
 
 ## `SELECT` examples
 
-Lists the accessible databases.
+<Tabs
+    defaultValue="list_databases"
+    values={[
+        { label: 'list_databases', value: 'list_databases' },
+        { label: 'fetch_database', value: 'fetch_database' }
+    ]
+}>
+<TabItem value="list_databases">
 
+Lists the accessible databases.
 
 ```sql
 SELECT
@@ -128,6 +136,43 @@ user_task_timeout_ms
 FROM snowflake.database.databases
 WHERE endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_database">
+
+Fetches a database.
+
+```sql
+SELECT
+name,
+budget,
+comment,
+created_on,
+data_retention_time_in_days,
+default_ddl_collation,
+dropped_on,
+is_current,
+is_default,
+kind,
+log_level,
+max_data_extension_time_in_days,
+options,
+origin,
+owner,
+owner_role_type,
+retention_time,
+serverless_task_max_statement_size,
+serverless_task_min_statement_size,
+suspend_task_after_num_failures,
+trace_level,
+user_task_managed_initial_warehouse_size,
+user_task_timeout_ms
+FROM snowflake.database.databases
+WHERE name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>databases</code> resource.
@@ -197,6 +242,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: databases
   props:
     - name: data__name
@@ -205,31 +251,72 @@ SELECT
       value: string
     - name: name
       value: string
+      description: >-
+        A Snowflake object identifier. If the identifier contains spaces or
+        special characters, the entire string must be enclosed in double quotes.
+        Identifiers enclosed in double quotes are also case-sensitive.
     - name: kind
       value: string
+      description: Database type, permanent (default) or transient.
     - name: comment
       value: string
+      description: Optional comment in which to store information related to the database.
     - name: data_retention_time_in_days
       value: integer
+      description: >-
+        Specifies the number of days for which Time Travel actions (CLONE and
+        UNDROP) can be performed on the database, as well as specifying the
+        default Time Travel retention time for all schemas created in the
+        database.
     - name: default_ddl_collation
       value: string
+      description: >-
+        Default collation specification for all schemas and tables added to the
+        database. You an override the default at the schema and individual table
+        levels.
     - name: log_level
       value: string
+      description: >-
+        Severity level of messages that should be ingested and made available in
+        the active event table. Currently, Snowflake supports only `TRACE`,
+        `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL` and `OFF`.
     - name: max_data_extension_time_in_days
       value: integer
+      description: >-
+        Maximum number of days for which Snowflake can extend the data retention
+        period for tables in the database to prevent streams on the tables from
+        becoming stale.
     - name: suspend_task_after_num_failures
       value: integer
+      description: >-
+        Maximum number of consecutive failed task runs before the current task
+        is suspended automatically.
     - name: trace_level
       value: string
+      description: >-
+        How trace events are ingested into the event table. Currently, Snowflake
+        supports only `ALWAYS`, `ON_EVENT`, and `OFF`.
     - name: user_task_managed_initial_warehouse_size
       value: string
+      description: >-
+        Size of the compute resources to provision for the first run of the
+        serverless task, before a task history is available for Snowflake to
+        determine an ideal size.
     - name: serverless_task_min_statement_size
       value: string
+      description: >-
+        Specifies the minimum allowed warehouse size for the serverless task.
+        Minimum XSMALL, Maximum XXLARGE.
     - name: serverless_task_max_statement_size
       value: string
+      description: >-
+        Specifies the maximum allowed warehouse size for the serverless task.
+        Minimum XSMALL, Maximum XXLARGE.
     - name: user_task_timeout_ms
       value: integer
-
+      description: >-
+        Time limit, in milliseconds, for a single run of the task before it
+        times out.
 ```
 </TabItem>
 </Tabs>

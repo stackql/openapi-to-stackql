@@ -132,6 +132,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: roles
   props:
     - name: data__name
@@ -140,9 +141,10 @@ SELECT
       value: string
     - name: name
       value: string
+      description: Name of the role.
     - name: comment
       value: string
-
+      description: Comment of the role.
 ```
 </TabItem>
 </Tabs>

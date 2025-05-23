@@ -92,8 +92,16 @@ Creates, updates, deletes, gets or lists a <code>dynamic_tables</code> resource.
 
 ## `SELECT` examples
 
-Lists the dynamic tables under the database and schema.
+<Tabs
+    defaultValue="list_dynamic_tables"
+    values={[
+        { label: 'list_dynamic_tables', value: 'list_dynamic_tables' },
+        { label: 'fetch_dynamic_table', value: 'fetch_dynamic_table' }
+    ]
+}>
+<TabItem value="list_dynamic_tables">
 
+Lists the dynamic tables under the database and schema.
 
 ```sql
 SELECT
@@ -124,6 +132,44 @@ WHERE database_name = '{{ database_name }}'
 AND schema_name = '{{ schema_name }}'
 AND endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_dynamic_table">
+
+Fetch a Dynamic Table.
+
+```sql
+SELECT
+name,
+automatic_clustering,
+budget,
+bytes,
+cluster_by,
+columns,
+comment,
+created_on,
+data_retention_time_in_days,
+database_name,
+initialize,
+kind,
+max_data_extension_time_in_days,
+owner,
+owner_role_type,
+query,
+refresh_mode,
+rows,
+scheduling_state,
+schema_name,
+target_lag,
+warehouse
+FROM snowflake.dynamic_table.dynamic_tables
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>dynamic_tables</code> resource.
@@ -205,6 +251,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: dynamic_tables
   props:
     - name: database_name
@@ -223,37 +270,63 @@ SELECT
       value: string
     - name: name
       value: string
+      description: >-
+        Specifies the name for the dynamic table, must be unique for the schema
+        in which the dynamic table is created
     - name: kind
       value: string
+      description: Specifies the dynamic table type, permanent (default) or transient.
     - name: columns
       value:
         - name: name
           value: string
+          description: Column name
         - name: datatype
           value: string
+          description: The data type for the column
         - name: comment
           value: string
+          description: Specifies a comment for the column
     - name: target_lag
       value:
         - name: type
           value: string
+          description: Type of lag, can be either USER_DEFINED or DOWNSTREAM.
+      description: Specifies the schedule for periodically refreshing the dynamic table.
     - name: refresh_mode
       value: string
+      description: Specifies the refresh type for the dynamic table
     - name: initialize
       value: string
+      description: Specifies the behavior of the initial refresh of the dynamic table
     - name: warehouse
       value: string
+      description: >-
+        Specifies the name of the warehouse that provides the compute resources
+        for refreshing the dynamic table
     - name: cluster_by
       value: array
+      description: >-
+        Specifies one or more columns or column expressions in the dynamic table
+        as the clustering key
     - name: query
       value: string
+      description: Specifies the query whose results the dynamic table should contain
     - name: data_retention_time_in_days
       value: integer
+      description: >-
+        Specifies the retention period for the dynamic table so that Time Travel
+        actions (SELECT, CLONE) can be performed on historical data in the
+        dynamic table
     - name: max_data_extension_time_in_days
       value: integer
+      description: >-
+        Specifies the retention period for the dynamic table so that Time Travel
+        actions (SELECT, CLONE) can be performed on historical data in the
+        dynamic table
     - name: comment
       value: string
-
+      description: Specifies a comment for the dynamic table.
 ```
 </TabItem>
 </Tabs>

@@ -63,8 +63,16 @@ Creates, updates, deletes, gets or lists a <code>external_volumes</code> resourc
 
 ## `SELECT` examples
 
-List external volumes
+<Tabs
+    defaultValue="list_external_volumes"
+    values={[
+        { label: 'list_external_volumes', value: 'list_external_volumes' },
+        { label: 'fetch_external_volume', value: 'fetch_external_volume' }
+    ]
+}>
+<TabItem value="list_external_volumes">
 
+List external volumes
 
 ```sql
 SELECT
@@ -78,6 +86,27 @@ storage_locations
 FROM snowflake.external_volume.external_volumes
 WHERE endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_external_volume">
+
+Fetch an external volume
+
+```sql
+SELECT
+name,
+allow_writes,
+comment,
+created_on,
+owner,
+owner_role_type,
+storage_locations
+FROM snowflake.external_volume.external_volumes
+WHERE name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>external_volumes</code> resource.
@@ -131,6 +160,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: external_volumes
   props:
     - name: data__name
@@ -141,17 +171,28 @@ SELECT
       value: string
     - name: name
       value: string
+      description: >-
+        String that specifies the identifier (the name) for the external volume;
+        must be unique in your account.
     - name: storage_locations
       value:
         - name: name
           value: string
         - name: storage_provider
           value: string
+          description: Specifies the cloud storage provider that stores your data files.
+      description: >-
+        Set of named cloud storage locations in different regions and,
+        optionally, cloud platforms.
     - name: allow_writes
       value: boolean
+      description: >-
+        Specifies whether write operations are allowed for the external volume;
+        must be set to TRUE for Iceberg tables that use Snowflake as the
+        catalog.
     - name: comment
       value: string
-
+      description: String (literal) that specifies a comment for the external volume.
 ```
 </TabItem>
 </Tabs>

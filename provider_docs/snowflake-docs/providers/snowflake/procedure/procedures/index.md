@@ -73,8 +73,16 @@ Creates, updates, deletes, gets or lists a <code>procedures</code> resource.
 
 ## `SELECT` examples
 
-List procedures
+<Tabs
+    defaultValue="list_procedures"
+    values={[
+        { label: 'list_procedures', value: 'list_procedures' },
+        { label: 'fetch_procedure', value: 'fetch_procedure' }
+    ]
+}>
+<TabItem value="list_procedures">
 
+List procedures
 
 ```sql
 SELECT
@@ -99,6 +107,38 @@ WHERE database_name = '{{ database_name }}'
 AND schema_name = '{{ schema_name }}'
 AND endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_procedure">
+
+Fetch a procedure
+
+```sql
+SELECT
+name,
+arguments,
+body,
+comment,
+created_on,
+database_name,
+execute_as,
+is_builtin,
+is_secure,
+language_config,
+max_num_arguments,
+min_num_arguments,
+owner,
+owner_role_type,
+return_type,
+schema_name
+FROM snowflake.procedure.procedures
+WHERE database_name = '{{ database_name }}'
+AND nameWithArgs = '{{ nameWithArgs }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>procedures</code> resource.
@@ -174,6 +214,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: procedures
   props:
     - name: database_name
@@ -194,33 +235,46 @@ SELECT
       value: string
     - name: name
       value: string
+      description: Name of the procedure
     - name: execute_as
       value: string
+      description: What permissions should the procedure execution be called with
     - name: is_secure
       value: boolean
+      description: Specifies whether the function/procedure is secure or not
     - name: arguments
       value:
         - name: name
           value: string
+          description: Argument name
         - name: datatype
           value: string
+          description: Argument data type
         - name: default_value
           value: string
+          description: Default value of the argument
+      description: List of arguments for the function/procedure
     - name: return_type
       value:
         - name: type
           value: string
+          description: Type of the return, can be either DATATYPE or TABLE
     - name: language_config
       value:
         - name: language
           value: string
+          description: >-
+            Language that the function/procedure is written in. Possible values
+            include: JAVA, JAVASCRIPT, PYTHON, SCALA, SQL
         - name: called_on_null_input
           value: boolean
+          description: Decide if the function/procedure can receive null input
     - name: comment
       value: string
+      description: Specifies a comment for the function/procedure
     - name: body
       value: string
-
+      description: Function/procedure definition
 ```
 </TabItem>
 </Tabs>

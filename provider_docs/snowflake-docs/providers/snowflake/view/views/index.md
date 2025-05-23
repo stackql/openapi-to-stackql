@@ -72,8 +72,16 @@ Creates, updates, deletes, gets or lists a <code>views</code> resource.
 
 ## `SELECT` examples
 
-List views
+<Tabs
+    defaultValue="list_views"
+    values={[
+        { label: 'list_views', value: 'list_views' },
+        { label: 'fetch_view', value: 'fetch_view' }
+    ]
+}>
+<TabItem value="list_views">
 
+List views
 
 ```sql
 SELECT
@@ -94,6 +102,34 @@ WHERE database_name = '{{ database_name }}'
 AND schema_name = '{{ schema_name }}'
 AND endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_view">
+
+Fetch a view
+
+```sql
+SELECT
+name,
+columns,
+comment,
+created_on,
+database_name,
+kind,
+owner,
+owner_role_type,
+query,
+recursive,
+schema_name,
+secure
+FROM snowflake.view.views
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>views</code> resource.
@@ -163,6 +199,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: views
   props:
     - name: database_name
@@ -179,23 +216,33 @@ SELECT
       value: string
     - name: name
       value: string
+      description: Name of the view
     - name: secure
       value: boolean
+      description: Whether or not this view is secure
     - name: kind
       value: string
+      description: Kind of the view, permanent (default) or temporary
     - name: recursive
       value: boolean
+      description: >-
+        Whether or not this view can refer to itself using recursive syntax
+        withot requiring a CTE (common table expression)
     - name: columns
       value:
         - name: name
           value: string
+          description: Column name
         - name: comment
           value: string
+          description: Specifies a comment for the column
+      description: The columns of the view
     - name: comment
       value: string
+      description: user comment associated to an object in the dictionary
     - name: query
       value: string
-
+      description: Query used to create the view
 ```
 </TabItem>
 </Tabs>

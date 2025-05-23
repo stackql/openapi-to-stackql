@@ -85,8 +85,16 @@ Creates, updates, deletes, gets or lists a <code>compute_pools</code> resource.
 
 ## `SELECT` examples
 
-Lists the compute pools under the account.
+<Tabs
+    defaultValue="list_compute_pools"
+    values={[
+        { label: 'list_compute_pools', value: 'list_compute_pools' },
+        { label: 'fetch_compute_pool', value: 'fetch_compute_pool' }
+    ]
+}>
+<TabItem value="list_compute_pools">
 
+Lists the compute pools under the account.
 
 ```sql
 SELECT
@@ -115,6 +123,42 @@ updated_on
 FROM snowflake.compute_pool.compute_pools
 WHERE endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_compute_pool">
+
+Fetches a named compute pool. You can get the name of the compute pool from the `/api/v2/compute-pools` GET request.
+
+```sql
+SELECT
+name,
+active_nodes,
+application,
+auto_resume,
+auto_suspend_secs,
+budget,
+comment,
+created_on,
+error_code,
+idle_nodes,
+instance_family,
+is_exclusive,
+max_nodes,
+min_nodes,
+num_jobs,
+num_services,
+owner,
+resumed_on,
+state,
+status_message,
+target_nodes,
+updated_on
+FROM snowflake.compute_pool.compute_pools
+WHERE name = '{{ name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>compute_pools</code> resource.
@@ -178,6 +222,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: compute_pools
   props:
     - name: data__instance_family
@@ -192,19 +237,30 @@ SELECT
       value: string
     - name: name
       value: string
+      description: >-
+        A Snowflake object identifier. If the identifier contains spaces or
+        special characters, the entire string must be enclosed in double quotes.
+        Identifiers enclosed in double quotes are also case-sensitive.
     - name: min_nodes
       value: integer
+      description: Minimum number of nodes for the compute pool.
     - name: max_nodes
       value: integer
+      description: Maximum number of nodes for the compute pool.
     - name: instance_family
       value: string
+      description: Instance family for the compute pool.
     - name: auto_resume
       value: boolean
+      description: >-
+        Whether Snowflake automatically resumes the compute pool when any
+        statement that requires the compute pool is submitted.
     - name: comment
       value: string
+      description: Comment describing the compute pool.
     - name: auto_suspend_secs
       value: integer
-
+      description: Number of seconds until the compute pool automatically suspends.
 ```
 </TabItem>
 </Tabs>

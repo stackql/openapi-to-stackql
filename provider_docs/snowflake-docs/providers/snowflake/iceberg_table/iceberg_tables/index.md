@@ -100,8 +100,16 @@ Creates, updates, deletes, gets or lists a <code>iceberg_tables</code> resource.
 
 ## `SELECT` examples
 
-Lists the Apache Iceberg™ tables for which you have access privileges.
+<Tabs
+    defaultValue="list_iceberg_tables"
+    values={[
+        { label: 'list_iceberg_tables', value: 'list_iceberg_tables' },
+        { label: 'fetch_iceberg_table', value: 'fetch_iceberg_table' }
+    ]
+}>
+<TabItem value="list_iceberg_tables">
 
+Lists the Apache Iceberg™ tables for which you have access privileges.
 
 ```sql
 SELECT
@@ -135,6 +143,47 @@ WHERE database_name = '{{ database_name }}'
 AND schema_name = '{{ schema_name }}'
 AND endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_iceberg_table">
+
+Describe an iceberg table
+
+```sql
+SELECT
+name,
+auto_refresh,
+base_location,
+can_write_metadata,
+catalog,
+catalog_namespace,
+catalog_sync,
+catalog_table_name,
+change_tracking,
+cluster_by,
+columns,
+comment,
+constraints,
+created_on,
+data_retention_time_in_days,
+database_name,
+external_volume,
+iceberg_table_type,
+max_data_extension_time_in_days,
+metadata_file_path,
+owner,
+owner_role_type,
+replace_invalid_characters,
+schema_name,
+storage_serialization_policy
+FROM snowflake.iceberg_table.iceberg_tables
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>iceberg_tables</code> resource.
@@ -220,6 +269,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: iceberg_tables
   props:
     - name: database_name
@@ -232,55 +282,94 @@ SELECT
       value: string
     - name: name
       value: string
+      description: Name of the iceberg table
     - name: comment
       value: string
+      description: user comment associated to an object in the dictionary
     - name: change_tracking
       value: boolean
+      description: >-
+        True if change tracking is enabled, allowing streams and CHANGES to be
+        used on the entity.
     - name: max_data_extension_time_in_days
       value: integer
+      description: >-
+        Maximum number of days to extend data retention beyond the retention
+        period to prevent a stream becoming stale.
     - name: external_volume
       value: string
+      description: >-
+        Name of an external volume that will be used for persisted Iceberg
+        metadata and data files.
     - name: data_retention_time_in_days
       value: integer
+      description: number of days to retain the old version of deleted/updated data
     - name: catalog_sync
       value: string
+      description: Name of the catalog integration to sync this table
     - name: catalog
       value: string
+      description: Name of the catalog integration to use for iceberg tables
     - name: storage_serialization_policy
       value: string
+      description: >-
+        Storage serialization policy used for managed Iceberg table. This
+        include encodings and compressions
     - name: catalog_table_name
       value: string
+      description: Name of the table as recognized by the catalog.
     - name: catalog_namespace
       value: string
+      description: >-
+        Catalog namespace for the table. The namespace defined when the table
+        was created. Otherwise, the default namespace associated with the
+        catalog integration used by the table. If you’re syncing the table to
+        Snowflake Open Catalog, the default is null.
     - name: cluster_by
       value: array
+      description: >-
+        Specifies one or more columns or column expressions in the table as the
+        clustering key.
     - name: columns
       value:
         - name: name
           value: string
+          description: Column name
         - name: datatype
           value: string
+          description: The data type for the column
         - name: comment
           value: string
+          description: Specifies a comment for the column
         - name: nullable
           value: boolean
+          description: Argument null return acceptance criteria
         - name: default_value
           value: string
+          description: Default value for the column
     - name: base_location
       value: string
+      description: >-
+        The path to a directory where Snowflake can write data and metadata
+        files for the table.
     - name: replace_invalid_characters
       value: boolean
+      description: Specifies whether to replace invalid characters in the column names
     - name: metadata_file_path
       value: string
+      description: >-
+        Specifies the relative path of the Iceberg metadata file to use for
+        column definitions.
     - name: constraints
       value:
         - name: name
           value: string
+          description: Name of the Constraint
         - name: column_names
           value: array
         - name: constraint_type
           value: string
-
+          description: Type of the constraint
 ```
 </TabItem>
 </Tabs>

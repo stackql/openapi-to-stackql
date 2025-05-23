@@ -73,8 +73,16 @@ Creates, updates, deletes, gets or lists a <code>pipes</code> resource.
 
 ## `SELECT` examples
 
-List pipes
+<Tabs
+    defaultValue="list_pipes"
+    values={[
+        { label: 'list_pipes', value: 'list_pipes' },
+        { label: 'fetch_pipe', value: 'fetch_pipe' }
+    ]
+}>
+<TabItem value="list_pipes">
 
+List pipes
 
 ```sql
 SELECT
@@ -98,6 +106,37 @@ WHERE database_name = '{{ database_name }}'
 AND schema_name = '{{ schema_name }}'
 AND endpoint = '{{ endpoint }}';
 ```
+</TabItem>
+<TabItem value="fetch_pipe">
+
+Fetch a pipe
+
+```sql
+SELECT
+name,
+auto_ingest,
+aws_sns_topic,
+budget,
+comment,
+copy_statement,
+created_on,
+database_name,
+error_integration,
+integration,
+invalid_reason,
+owner,
+owner_role_type,
+pattern,
+schema_name
+FROM snowflake.pipe.pipes
+WHERE database_name = '{{ database_name }}'
+AND name = '{{ name }}'
+AND schema_name = '{{ schema_name }}'
+AND endpoint = '{{ endpoint }}';
+```
+</TabItem>
+</Tabs>
+
 ## `INSERT` example
 
 Use the following StackQL query and manifest file to create a new <code>pipes</code> resource.
@@ -165,6 +204,7 @@ SELECT
 <TabItem value="manifest">
 
 ```yaml
+# Description fields below are for documentation purposes only and are not required in the manifest
 - name: pipes
   props:
     - name: database_name
@@ -179,19 +219,36 @@ SELECT
       value: string
     - name: name
       value: string
+      description: Name of the pipe
     - name: comment
       value: string
+      description: user comment associated to an object in the dictionary
     - name: auto_ingest
       value: boolean
+      description: TRUE if all files from stage need to be auto-ingested
     - name: error_integration
       value: string
+      description: >-
+        Link to integration object that point to a user provided Azure storage
+        queue / SQS. When present, errors (e.g. ingest failure for Snowpipe or a
+        user task failure or replication failure) will be sent to this queue to
+        notify customers
     - name: aws_sns_topic
       value: string
+      description: >-
+        Optional, if provided, auto_ingest pipe will only receive messages from
+        this SNS topic.
     - name: integration
       value: string
+      description: >-
+        Link to integration object that ties a user provided storage queue to an
+        auto_ingest enabled pipe. Required for auto_ingest to work on azure.
     - name: copy_statement
       value: string
-
+      description: >-
+        COPY INTO statement used to load data from queued files into a Snowflake
+        table. This statement serves as the text/definition for the pipe and is
+        displayed in the SHOW PIPES output
 ```
 </TabItem>
 </Tabs>
