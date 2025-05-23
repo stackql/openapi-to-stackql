@@ -178,16 +178,31 @@ Creates, updates, deletes, gets or lists a <code>${resourceName}</code> resource
         }
     }
 
-    content += '\n## Methods\n| Name | Accessible by | Required Params | Optional Params | Description |\n|:-----|:--------------|:----------------|:----------------|:------------|\n';
+    // Check if any methods have optional parameters
+    const hasOptionalParams = methods.some(method => {
+        const optionalParams = getOptionalParams(method.MethodName, resourceData, dereferencedAPI);
+        return optionalParams && optionalParams.trim() !== '';
+    });
+
+    // Build methods table header conditionally
+    if (hasOptionalParams) {
+        content += '\n## Methods\n| Name | Accessible by | Required Params | Optional Params | Description |\n|:-----|:--------------|:----------------|:----------------|:------------|\n';
+    } else {
+        content += '\n## Methods\n| Name | Accessible by | Required Params | Description |\n|:-----|:--------------|:----------------|:------------|\n';
+    }
 
     // Append methods
     methods.forEach(method => {
         const sqlVerb = method.SQLVerb;
-        const optionalParams = getOptionalParams(method.MethodName, resourceData, dereferencedAPI);
-        content += `| <CopyableCode code="${method.MethodName}" /> | ${mdCodeAnchor}${sqlVerb}${mdCodeAnchor} | <CopyableCode code="${method.RequiredParams}" /> | ${optionalParams || '-'} | ${cleanDescription(method.description)} |\n`;
-    });    
+        if (hasOptionalParams) {
+            const optionalParams = getOptionalParams(method.MethodName, resourceData, dereferencedAPI);
+            content += `| <CopyableCode code="${method.MethodName}" /> | ${mdCodeAnchor}${sqlVerb}${mdCodeAnchor} | <CopyableCode code="${method.RequiredParams}" /> | ${optionalParams || '-'} | ${cleanDescription(method.description)} |\n`;
+        } else {
+            content += `| <CopyableCode code="${method.MethodName}" /> | ${mdCodeAnchor}${sqlVerb}${mdCodeAnchor} | <CopyableCode code="${method.RequiredParams}" /> | ${cleanDescription(method.description)} |\n`;
+        }
+    });
 
-    content += '<br />'
+    content += '\n<br />\n';
 
     // Add optional parameters details section
     const optionalParamsDetails = getOptionalParamsDetails(methods, resourceData, dereferencedAPI);
@@ -299,77 +314,6 @@ ${codeBlockEnd}`;
 
 const readOnlyPropertyNames = [
 ];
-
-// function getSchemaManifest(resourceName, requiredParams, requestBodySchema) {
-//     const allProps = [];
-
-//     // Helper function to recursively process properties in the schema
-//     function processProperties(properties) {
-//         const result = [];
-
-//         Object.entries(properties).forEach(([key, prop]) => {
-//             // Handle `allOf` by merging properties
-//             if (prop.allOf) {
-//                 prop = prop.allOf.reduce((acc, item) => ({
-//                     ...acc,
-//                     ...item,
-//                     properties: {
-//                         ...acc.properties,
-//                         ...item.properties
-//                     },
-//                     required: Array.from(new Set([...(acc.required || []), ...(item.required || [])]))
-//                 }), {});
-//             }
-
-//             // Exclude readOnly properties
-//             if (prop.readOnly) return;
-
-//             // Determine the property type or default to "string"
-//             const type = prop.type || "string";
-
-//             // Handle nested objects recursively
-//             if (type === "object" && prop.properties) {
-//                 result.push({
-//                     name: key,
-//                     props: processProperties(prop.properties)
-//                 });
-//             } else if (type === "array" && prop.items && prop.items.type === "object" && prop.items.properties) {
-//                 // If array of objects, process items properties as nested props
-//                 result.push({
-//                     name: key,
-//                     value: "array",
-//                     props: processProperties(prop.items.properties)
-//                 });
-//             } else {
-//                 // Simple property or array of non-objects
-//                 result.push({
-//                     name: key,
-//                     value: type
-//                 });
-//             }
-//         });
-
-//         return result;
-//     }
-
-//     // Add requiredParams as simple properties
-//     requiredParams.forEach(param => {
-//         allProps.push({
-//             name: param,
-//             value: "string"
-//         });
-//     });
-
-//     // Process requestBodySchema properties and add to allProps
-//     if (requestBodySchema?.properties) {
-//         allProps.push(...processProperties(requestBodySchema.properties));
-//     }
-
-//     return [{
-//         name: resourceName,
-//         props: allProps
-//     }];
-// }
 
 function getSchemaManifest(resourceName, requiredParams, requestBodySchema) {
     const allProps = [];
