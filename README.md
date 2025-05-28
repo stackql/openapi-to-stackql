@@ -12,3 +12,7 @@ bash ./bin/openapi-to-stackql.sh convert \
 --skip common.yaml
 
 bash ./bin/generate-docs.sh digitalocean
+
+
+bash ./bin/openapi-to-stackql.sh analyze \
+--input source/okta --output okta_operations

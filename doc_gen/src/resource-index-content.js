@@ -24,6 +24,10 @@ async function executeSQL(connectionOptions, query) {
       }
 }
 
+function shouldQuoteValue(fieldType) {
+    return fieldType === 'string' || fieldType === 'array' || fieldType === 'object';
+}
+
 function cleanDescription(description) {
     // Replace <a> tags with markdown equivalent
     description = description.replace(/<a\s+(?:[^>]*?\s+)?href="([^"]*)"(?:[^>]*?)>(.*?)<\/a>/gi, '[$2]($1)');
@@ -714,11 +718,31 @@ function generateInsertExample(
         const allInsertFields = Array.from(new Set([...reqBodyAllFieldsColList, ...requiredParams]));
 
         // INSERT select values
-        const reqBodyRequiredFieldsSelectVals = (requestBodySchema?.required || []).map(field => `'{{ ${field} }}'`);
-        const reqBodyAllFieldsSelectVals = Object.keys(requestBodySchema?.properties || {}).map(field => `'{{ ${field} }}'`);
+        const reqBodyRequiredFieldsSelectVals = (requestBodySchema?.required || []).map(field => {
+            const fieldType = requestBodySchema.properties?.[field]?.type || 'string';
+            return shouldQuoteValue(fieldType) ? `'{{ ${field} }}'` : `{{ ${field} }}`;
+        });
+
+        const reqBodyAllFieldsSelectVals = Object.keys(requestBodySchema?.properties || {}).map(field => {
+            const fieldType = requestBodySchema.properties?.[field]?.type || 'string';
+            return shouldQuoteValue(fieldType) ? `'{{ ${field} }}'` : `{{ ${field} }}`;
+        });
         
-        const requiredSelectValues = Array.from(new Set([...reqBodyRequiredFieldsSelectVals, ...normalizedRequiredParams.map(field => `'{{ ${field} }}'`)]));
-        const allSelectValues = Array.from(new Set([...reqBodyAllFieldsSelectVals, ...normalizedRequiredParams.map(field => `'{{ ${field} }}'`)]));
+        const requiredSelectValues = Array.from(new Set([
+            ...reqBodyRequiredFieldsSelectVals, 
+            ...normalizedRequiredParams.map(field => {
+                const fieldType = requestBodySchema?.properties?.[field]?.type || 'string';
+                return shouldQuoteValue(fieldType) ? `'{{ ${field} }}'` : `{{ ${field} }}`;
+            })
+        ]));
+
+        const allSelectValues = Array.from(new Set([
+            ...reqBodyAllFieldsSelectVals, 
+            ...normalizedRequiredParams.map(field => {
+                const fieldType = requestBodySchema?.properties?.[field]?.type || 'string';
+                return shouldQuoteValue(fieldType) ? `'{{ ${field} }}'` : `{{ ${field} }}`;
+            })
+        ]));         
 
         // Check if 'Required Properties' tab should be added
         const shouldAddRequiredTab = requiredInsertFields.length > 0 && requiredInsertFields.length !== allInsertFields.length;
@@ -817,17 +841,12 @@ function generateUpdateExample(providerName, serviceName, resourceName, resource
             console.log("Path, operation, or requestBody not found for:", operationPath);
         }
 
-        // Generate SET clause: required fields from requestBodySchema
-        const reqBodyRequiredFieldsSetParams = Object.keys(requestBodySchema?.properties || {}).map(field => {            
+        const reqBodyRequiredFieldsSetParams = Object.keys(requestBodySchema?.properties || {}).map(field => {
             const fieldType = requestBodySchema.properties?.[field]?.type || 'string';
-            if (fieldType === 'string') {
+            if (fieldType === 'string' || fieldType === 'array' || fieldType === 'object') {
                 return `${field} = '{{ ${field} }}'`;
-            } else if (fieldType === 'boolean') {
-                return `${field} = true|false`;
-            } else if (fieldType === 'number') {
-                return `${field} = number`;
             } else {
-                return `${field} = '{{ ${field} }}'`;
+                return `${field} = {{ ${field} }}`;
             }
         }).join(',\n');
 
