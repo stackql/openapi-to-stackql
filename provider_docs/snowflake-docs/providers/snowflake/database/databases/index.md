@@ -245,19 +245,22 @@ SELECT
 # Description fields below are for documentation purposes only and are not required in the manifest
 - name: databases
   props:
-    - name: data__name
-      value: string
     - name: endpoint
       value: string
+      description: Required parameter for the databases resource.
     - name: name
       value: string
       description: >-
         A Snowflake object identifier. If the identifier contains spaces or
         special characters, the entire string must be enclosed in double quotes.
-        Identifiers enclosed in double quotes are also case-sensitive.
+        Identifiers enclosed in double quotes are also case-sensitive. (Required
+        parameter for the databases resource.)
     - name: kind
       value: string
-      description: Database type, permanent (default) or transient.
+      description: >-
+        Database type, permanent (default) or transient. (valid values:
+        'PERMANENT', 'TRANSIENT')
+      default: PERMANENT
     - name: comment
       value: string
       description: Optional comment in which to store information related to the database.

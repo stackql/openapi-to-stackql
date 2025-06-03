@@ -138,10 +138,10 @@ SELECT
   props:
     - name: name
       value: string
-    - name: data__securable_type
-      value: string
+      description: Required parameter for the future_grants resource.
     - name: endpoint
       value: string
+      description: Required parameter for the future_grants resource.
     - name: securable
       value:
         - name: database
@@ -166,7 +166,9 @@ SELECT
           description: Schema name of the securable scope if applicable.
     - name: securable_type
       value: string
-      description: Type of the securable to be granted.
+      description: >-
+        Type of the securable to be granted. (Required parameter for the
+        future_grants resource.)
     - name: grant_option
       value: boolean
       description: >-

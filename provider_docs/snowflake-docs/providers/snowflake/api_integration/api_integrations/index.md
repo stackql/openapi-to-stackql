@@ -171,29 +171,27 @@ SELECT
 # Description fields below are for documentation purposes only and are not required in the manifest
 - name: api_integrations
   props:
-    - name: data__api_allowed_prefixes
-      value: string
-    - name: data__api_hook
-      value: string
-    - name: data__enabled
-      value: string
-    - name: data__name
-      value: string
     - name: endpoint
       value: string
+      description: Required parameter for the api_integrations resource.
     - name: name
       value: string
-      description: Name of the API integration.
+      description: >-
+        Name of the API integration. (Required parameter for the
+        api_integrations resource.)
     - name: api_hook
       value:
         - name: type
           value: string
-          description: Type of ApiHook, can be AWS, AZURE, GC or GIT.
+          description: >-
+            Type of ApiHook, can be AWS, AZURE, GC or GIT. (valid values: 'AWS',
+            'AZURE', 'GC', 'GIT')
+      description: Required parameter for the api_integrations resource.
     - name: api_allowed_prefixes
       value: array
       description: >-
         A comma-separated list of endpoints and resources that Snowflake can
-        access.
+        access. (Required parameter for the api_integrations resource.)
     - name: api_blocked_prefixes
       value: array
       description: >-
@@ -201,7 +199,9 @@ SELECT
         to be called from Snowflake.
     - name: enabled
       value: boolean
-      description: Whether the API integration is enabled.
+      description: >-
+        Whether the API integration is enabled. (Required parameter for the
+        api_integrations resource.)
     - name: comment
       value: string
       description: Comment for the API integration.

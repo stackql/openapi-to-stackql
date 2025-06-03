@@ -256,26 +256,25 @@ SELECT
   props:
     - name: database_name
       value: string
+      description: Required parameter for the dynamic_tables resource.
     - name: schema_name
       value: string
-    - name: data__name
-      value: string
-    - name: data__query
-      value: string
-    - name: data__target_lag
-      value: string
-    - name: data__warehouse
-      value: string
+      description: Required parameter for the dynamic_tables resource.
     - name: endpoint
       value: string
+      description: Required parameter for the dynamic_tables resource.
     - name: name
       value: string
       description: >-
         Specifies the name for the dynamic table, must be unique for the schema
-        in which the dynamic table is created
+        in which the dynamic table is created (Required parameter for the
+        dynamic_tables resource.)
     - name: kind
       value: string
-      description: Specifies the dynamic table type, permanent (default) or transient.
+      description: >-
+        Specifies the dynamic table type, permanent (default) or transient.
+        (valid values: 'PERMANENT', 'TRANSIENT')
+      default: PERMANENT
     - name: columns
       value:
         - name: name
@@ -292,18 +291,25 @@ SELECT
         - name: type
           value: string
           description: Type of lag, can be either USER_DEFINED or DOWNSTREAM.
-      description: Specifies the schedule for periodically refreshing the dynamic table.
+      description: >-
+        Specifies the schedule for periodically refreshing the dynamic table.
+        (Required parameter for the dynamic_tables resource.)
     - name: refresh_mode
       value: string
-      description: Specifies the refresh type for the dynamic table
+      description: >-
+        Specifies the refresh type for the dynamic table (valid values: 'AUTO',
+        'FULL', 'INCREMENTAL')
     - name: initialize
       value: string
-      description: Specifies the behavior of the initial refresh of the dynamic table
+      description: >-
+        Specifies the behavior of the initial refresh of the dynamic table
+        (valid values: 'ON_CREATE', 'ON_SCHEDULE')
     - name: warehouse
       value: string
       description: >-
         Specifies the name of the warehouse that provides the compute resources
-        for refreshing the dynamic table
+        for refreshing the dynamic table (Required parameter for the
+        dynamic_tables resource.)
     - name: cluster_by
       value: array
       description: >-
@@ -311,7 +317,9 @@ SELECT
         as the clustering key
     - name: query
       value: string
-      description: Specifies the query whose results the dynamic table should contain
+      description: >-
+        Specifies the query whose results the dynamic table should contain
+        (Required parameter for the dynamic_tables resource.)
     - name: data_retention_time_in_days
       value: integer
       description: >-

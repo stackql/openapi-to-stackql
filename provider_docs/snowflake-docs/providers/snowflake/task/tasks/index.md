@@ -282,20 +282,20 @@ SELECT
   props:
     - name: database_name
       value: string
+      description: Required parameter for the tasks resource.
     - name: schema_name
       value: string
-    - name: data__definition
-      value: string
-    - name: data__name
-      value: string
+      description: Required parameter for the tasks resource.
     - name: endpoint
       value: string
+      description: Required parameter for the tasks resource.
     - name: name
       value: string
       description: >-
         A Snowflake object identifier. If the identifier contains spaces or
         special characters, the entire string must be enclosed in double quotes.
-        Identifiers enclosed in double quotes are also case-sensitive.
+        Identifiers enclosed in double quotes are also case-sensitive. (Required
+        parameter for the tasks resource.)
     - name: warehouse
       value: string
       description: >-
@@ -333,6 +333,7 @@ SELECT
       description: >-
         The SQL definition for the task. Any one of single SQL statement, call
         to stored procedure, or procedural logic using Snowflake scripting.
+        (Required parameter for the tasks resource.)
     - name: predecessors
       value: array
       description: Specifies one or more predecessor tasks for the current task

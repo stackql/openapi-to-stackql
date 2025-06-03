@@ -156,15 +156,14 @@ SELECT
 # Description fields below are for documentation purposes only and are not required in the manifest
 - name: notification_integrations
   props:
-    - name: data__name
-      value: string
-    - name: data__notification_hook
-      value: string
     - name: endpoint
       value: string
+      description: Required parameter for the notification_integrations resource.
     - name: name
       value: string
-      description: Name of the notification.
+      description: >-
+        Name of the notification. (Required parameter for the
+        notification_integrations resource.)
     - name: enabled
       value: boolean
       description: Whether the notification integration is enabled.
@@ -175,7 +174,12 @@ SELECT
       value:
         - name: type
           value: string
-          description: Type of NotificationHook, can be QUEUE, EMAIL or WEBHOOK
+          description: >-
+            Type of NotificationHook, can be QUEUE, EMAIL or WEBHOOK (valid
+            values: 'EMAIL', 'WEBHOOK', 'QUEUE_AWS_SNS_OUTBOUND',
+            'QUEUE_AZURE_EVENT_GRID_OUTBOUND', 'QUEUE_GCP_PUBSUB_OUTBOUND',
+            'QUEUE_AZURE_EVENT_GRID_INBOUND', 'QUEUE_GCP_PUBSUB_INBOUND')
+      description: Required parameter for the notification_integrations resource.
 ```
 </TabItem>
 </Tabs>

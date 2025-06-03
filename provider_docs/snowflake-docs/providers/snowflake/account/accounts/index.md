@@ -220,22 +220,16 @@ SELECT
 # Description fields below are for documentation purposes only and are not required in the manifest
 - name: accounts
   props:
-    - name: data__admin_name
-      value: string
-    - name: data__edition
-      value: string
-    - name: data__email
-      value: string
-    - name: data__name
-      value: string
     - name: endpoint
       value: string
+      description: Required parameter for the accounts resource.
     - name: name
       value: string
       description: >-
         A Snowflake object identifier. If the identifier contains spaces or
         special characters, the entire string must be enclosed in double quotes.
-        Identifiers enclosed in double quotes are also case-sensitive.
+        Identifiers enclosed in double quotes are also case-sensitive. (Required
+        parameter for the accounts resource.)
     - name: region_group
       value: string
       description: >-
@@ -250,13 +244,18 @@ SELECT
         or single-tenant (for a Virtual Private Snowflake account).
     - name: edition
       value: string
-      description: Snowflake Edition of the account.
+      description: >-
+        Snowflake Edition of the account. (valid values: 'STANDARD',
+        'ENTERPRISE', 'BUSINESS_CRITICAL') (Required parameter for the accounts
+        resource.)
     - name: comment
       value: string
       description: Optional comment in which to store information related to the account.
     - name: admin_name
       value: string
-      description: Name of the account administrator.
+      description: >-
+        Name of the account administrator. (Required parameter for the accounts
+        resource.)
     - name: admin_password
       value: string
       description: Password for the account administrator.
@@ -274,15 +273,19 @@ SELECT
       description: Last name of the account administrator.
     - name: email
       value: string
-      description: Email address of the account administrator.
+      description: >-
+        Email address of the account administrator. (Required parameter for the
+        accounts resource.)
     - name: must_change_password
       value: boolean
       description: >-
         Indicates whether the account administrator must change the password at
         the next login.
+      default: false
     - name: polaris
       value: boolean
       description: Indicates whether the account is a Polaris account.
+      default: false
 ```
 </TabItem>
 </Tabs>

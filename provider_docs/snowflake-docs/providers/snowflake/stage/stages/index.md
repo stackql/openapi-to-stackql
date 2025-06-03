@@ -210,21 +210,26 @@ SELECT
   props:
     - name: database_name
       value: string
+      description: Required parameter for the stages resource.
     - name: schema_name
       value: string
-    - name: data__name
-      value: string
+      description: Required parameter for the stages resource.
     - name: endpoint
       value: string
+      description: Required parameter for the stages resource.
     - name: name
       value: string
       description: >-
         A Snowflake object identifier. If the identifier contains spaces or
         special characters, the entire string must be enclosed in double quotes.
-        Identifiers enclosed in double quotes are also case-sensitive.
+        Identifiers enclosed in double quotes are also case-sensitive. (Required
+        parameter for the stages resource.)
     - name: kind
       value: string
-      description: Specifies whether the stage is permanent or temporary.
+      description: >-
+        Specifies whether the stage is permanent or temporary. (valid values:
+        'PERMANENT', 'TEMPORARY')
+      default: PERMANENT
     - name: url
       value: string
       description: URL for the external stage; blank for an internal stage.
@@ -252,7 +257,10 @@ SELECT
       value:
         - name: type
           value: string
-          description: Specifies the encryption type used.
+          description: >-
+            Specifies the encryption type used. (valid values: 'SNOWFLAKE_FULL',
+            'SNOWFLAKE_SSE', 'AWS_CSE', 'AWS_SSE_S3', 'AWS_SSE_KMS',
+            'GCS_SSE_KMS', 'AZURE_CSE', 'NONE')
         - name: master_key
           value: string
           description: >-
@@ -272,11 +280,13 @@ SELECT
           description: >-
             Specifies whether to add a directory table to the stage. When the
             value is TRUE, a directory table is created with the stage.
+          default: false
         - name: refresh_on_create
           value: boolean
           description: >-
             Specifies whether to automatically refresh the directory table
             metadata once, immediately after the stage is created.
+          default: true
         - name: auto_refresh
           value: boolean
           description: >-
@@ -284,6 +294,7 @@ SELECT
             refreshes of the directory table metadata when new or updated data
             files are available in the named external stage specified in the URL
             value.
+          default: false
         - name: notification_integration
           value: string
           description: >-

@@ -144,34 +144,35 @@ SELECT
 # Description fields below are for documentation purposes only and are not required in the manifest
 - name: managed_accounts
   props:
-    - name: data__account_type
-      value: string
-    - name: data__admin_name
-      value: string
-    - name: data__admin_password
-      value: string
-    - name: data__name
-      value: string
     - name: endpoint
       value: string
+      description: Required parameter for the managed_accounts resource.
     - name: name
       value: string
       description: >-
         A Snowflake object identifier. If the identifier contains spaces or
         special characters, the entire string must be enclosed in double quotes.
-        Identifiers enclosed in double quotes are also case-sensitive.
+        Identifiers enclosed in double quotes are also case-sensitive. (Required
+        parameter for the managed_accounts resource.)
     - name: comment
       value: string
       description: Optional comment in which to store information related to the account.
     - name: admin_name
       value: string
-      description: Name of the account administrator.
+      description: >-
+        Name of the account administrator. (Required parameter for the
+        managed_accounts resource.)
     - name: admin_password
       value: string
-      description: Password for the account administrator.
+      description: >-
+        Password for the account administrator. (Required parameter for the
+        managed_accounts resource.)
     - name: account_type
       value: string
-      description: Type of the account.
+      description: >-
+        Type of the account. (valid values: 'READER') (Required parameter for
+        the managed_accounts resource.)
+      default: READER
 ```
 </TabItem>
 </Tabs>

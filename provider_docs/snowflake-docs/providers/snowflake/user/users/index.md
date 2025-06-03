@@ -301,13 +301,12 @@ SELECT
 # Description fields below are for documentation purposes only and are not required in the manifest
 - name: users
   props:
-    - name: data__name
-      value: string
     - name: endpoint
       value: string
+      description: Required parameter for the users resource.
     - name: name
       value: string
-      description: User name
+      description: User name (Required parameter for the users resource.)
     - name: password
       value: string
       description: Password
@@ -359,6 +358,8 @@ SELECT
       description: >-
         The default secondary roles of this user to use when starting a session.
         Only valid set values are ALL or NONE. Default is ALL after 2024-07 BCR.
+        (valid values: 'ALL', 'NONE')
+      default: ALL
     - name: mins_to_bypass_mfa
       value: integer
       description: How many minutes until MFA is required again

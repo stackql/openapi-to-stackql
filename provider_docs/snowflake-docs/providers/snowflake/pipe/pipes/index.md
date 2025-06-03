@@ -209,17 +209,16 @@ SELECT
   props:
     - name: database_name
       value: string
+      description: Required parameter for the pipes resource.
     - name: schema_name
       value: string
-    - name: data__copy_statement
-      value: string
-    - name: data__name
-      value: string
+      description: Required parameter for the pipes resource.
     - name: endpoint
       value: string
+      description: Required parameter for the pipes resource.
     - name: name
       value: string
-      description: Name of the pipe
+      description: Name of the pipe (Required parameter for the pipes resource.)
     - name: comment
       value: string
       description: user comment associated to an object in the dictionary
@@ -248,7 +247,8 @@ SELECT
       description: >-
         COPY INTO statement used to load data from queued files into a Snowflake
         table. This statement serves as the text/definition for the pipe and is
-        displayed in the SHOW PIPES output
+        displayed in the SHOW PIPES output (Required parameter for the pipes
+        resource.)
 ```
 </TabItem>
 </Tabs>

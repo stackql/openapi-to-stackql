@@ -254,19 +254,23 @@ SELECT
   props:
     - name: database_name
       value: string
-    - name: data__name
-      value: string
+      description: Required parameter for the schemas resource.
     - name: endpoint
       value: string
+      description: Required parameter for the schemas resource.
     - name: name
       value: string
       description: >-
         A Snowflake object identifier. If the identifier contains spaces or
         special characters, the entire string must be enclosed in double quotes.
-        Identifiers enclosed in double quotes are also case-sensitive.
+        Identifiers enclosed in double quotes are also case-sensitive. (Required
+        parameter for the schemas resource.)
     - name: kind
       value: string
-      description: Schema type, permanent (default) or transient.
+      description: >-
+        Schema type, permanent (default) or transient. (valid values:
+        'PERMANENT', 'TRANSIENT')
+      default: PERMANENT
     - name: comment
       value: string
       description: Optional comment in which to store information related to the schema.
@@ -275,6 +279,7 @@ SELECT
       description: >-
         Whether this schema is a managed access schema that centralizes
         privilege management with the schema owner.
+      default: false
     - name: data_retention_time_in_days
       value: integer
       description: >-

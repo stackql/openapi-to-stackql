@@ -219,26 +219,21 @@ SELECT
   props:
     - name: database_name
       value: string
+      description: Required parameter for the procedures resource.
     - name: schema_name
       value: string
-    - name: data__arguments
-      value: string
-    - name: data__body
-      value: string
-    - name: data__language_config
-      value: string
-    - name: data__name
-      value: string
-    - name: data__return_type
-      value: string
+      description: Required parameter for the procedures resource.
     - name: endpoint
       value: string
+      description: Required parameter for the procedures resource.
     - name: name
       value: string
-      description: Name of the procedure
+      description: Name of the procedure (Required parameter for the procedures resource.)
     - name: execute_as
       value: string
-      description: What permissions should the procedure execution be called with
+      description: >-
+        What permissions should the procedure execution be called with (valid
+        values: 'CALLER', 'OWNER')
     - name: is_secure
       value: boolean
       description: Specifies whether the function/procedure is secure or not
@@ -249,16 +244,26 @@ SELECT
           description: Argument name
         - name: datatype
           value: string
-          description: Argument data type
+          description: >-
+            Argument data type (valid values: 'ARRAY', 'BIGINT', 'BINARY',
+            'BOOLEAN', 'BYTEINT', 'CHAR', 'CHARACTER', 'DATE', 'DATETIME',
+            'DECIMAL', 'DOUBLE', 'DOUBLE PRECISION', 'FLOAT', 'FLOAT4',
+            'FLOAT8', 'GEOGRAPHY', 'GEOMETRY', 'INT', 'INTEGER', 'NUMBER',
+            'NUMERIC', 'OBJECT', 'REAL', 'STRING', 'SMALLINT', 'TEXT', 'TIME',
+            'TIMESTAMP_LTZ', 'TIMESTAMP_NTZ', 'TIMESTAMP_TZ', 'TINYINT',
+            'VARBINARY', 'VARCHAR', 'VARIANT', 'VECTOR')
         - name: default_value
           value: string
           description: Default value of the argument
-      description: List of arguments for the function/procedure
+      description: >-
+        List of arguments for the function/procedure (Required parameter for the
+        procedures resource.)
     - name: return_type
       value:
         - name: type
           value: string
           description: Type of the return, can be either DATATYPE or TABLE
+      description: Required parameter for the procedures resource.
     - name: language_config
       value:
         - name: language
@@ -269,12 +274,15 @@ SELECT
         - name: called_on_null_input
           value: boolean
           description: Decide if the function/procedure can receive null input
+      description: Required parameter for the procedures resource.
     - name: comment
       value: string
       description: Specifies a comment for the function/procedure
     - name: body
       value: string
-      description: Function/procedure definition
+      description: >-
+        Function/procedure definition (Required parameter for the procedures
+        resource.)
 ```
 </TabItem>
 </Tabs>

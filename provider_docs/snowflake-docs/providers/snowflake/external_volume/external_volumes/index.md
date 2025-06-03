@@ -163,27 +163,28 @@ SELECT
 # Description fields below are for documentation purposes only and are not required in the manifest
 - name: external_volumes
   props:
-    - name: data__name
-      value: string
-    - name: data__storage_locations
-      value: string
     - name: endpoint
       value: string
+      description: Required parameter for the external_volumes resource.
     - name: name
       value: string
       description: >-
         String that specifies the identifier (the name) for the external volume;
-        must be unique in your account.
+        must be unique in your account. (Required parameter for the
+        external_volumes resource.)
     - name: storage_locations
       value:
         - name: name
           value: string
         - name: storage_provider
           value: string
-          description: Specifies the cloud storage provider that stores your data files.
+          description: >-
+            Specifies the cloud storage provider that stores your data files.
+            (valid values: 'S3', 'S3GOV', 'GCS', 'AZURE')
       description: >-
         Set of named cloud storage locations in different regions and,
-        optionally, cloud platforms.
+        optionally, cloud platforms. (Required parameter for the
+        external_volumes resource.)
     - name: allow_writes
       value: boolean
       description: >-

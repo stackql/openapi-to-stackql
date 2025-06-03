@@ -135,13 +135,12 @@ SELECT
 # Description fields below are for documentation purposes only and are not required in the manifest
 - name: roles
   props:
-    - name: data__name
-      value: string
     - name: endpoint
       value: string
+      description: Required parameter for the roles resource.
     - name: name
       value: string
-      description: Name of the role.
+      description: Name of the role. (Required parameter for the roles resource.)
     - name: comment
       value: string
       description: Comment of the role.

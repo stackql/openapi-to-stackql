@@ -225,31 +225,31 @@ SELECT
 # Description fields below are for documentation purposes only and are not required in the manifest
 - name: compute_pools
   props:
-    - name: data__instance_family
-      value: string
-    - name: data__max_nodes
-      value: string
-    - name: data__min_nodes
-      value: string
-    - name: data__name
-      value: string
     - name: endpoint
       value: string
+      description: Required parameter for the compute_pools resource.
     - name: name
       value: string
       description: >-
         A Snowflake object identifier. If the identifier contains spaces or
         special characters, the entire string must be enclosed in double quotes.
-        Identifiers enclosed in double quotes are also case-sensitive.
+        Identifiers enclosed in double quotes are also case-sensitive. (Required
+        parameter for the compute_pools resource.)
     - name: min_nodes
       value: integer
-      description: Minimum number of nodes for the compute pool.
+      description: >-
+        Minimum number of nodes for the compute pool. (Required parameter for
+        the compute_pools resource.)
     - name: max_nodes
       value: integer
-      description: Maximum number of nodes for the compute pool.
+      description: >-
+        Maximum number of nodes for the compute pool. (Required parameter for
+        the compute_pools resource.)
     - name: instance_family
       value: string
-      description: Instance family for the compute pool.
+      description: >-
+        Instance family for the compute pool. (Required parameter for the
+        compute_pools resource.)
     - name: auto_resume
       value: boolean
       description: >-

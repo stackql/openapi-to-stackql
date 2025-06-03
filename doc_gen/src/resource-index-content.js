@@ -459,6 +459,23 @@ function getSchemaManifest(resourceName, requiredParams, requestBodySchema) {
                 baseProperty.description = cleanDescription(prop.description);
             }
 
+            // Add default if available
+            if (prop.default !== undefined) {
+                baseProperty.default = prop.default;
+            }
+
+            // Add enum values to description if available
+            if (prop.enum && prop.enum.length > 0) {
+                const enumValues = prop.enum.map(val => `'${val}'`).join(', ');
+                const enumText = `(valid values: ${enumValues})`;
+                
+                if (baseProperty.description) {
+                    baseProperty.description = `${baseProperty.description} ${enumText}`;
+                } else {
+                    baseProperty.description = enumText;
+                }
+            }
+
             // Handle nested objects recursively
             if (type === "object" && prop.properties) {
                 const nestedProps = processProperties(prop.properties);
@@ -486,7 +503,8 @@ function getSchemaManifest(resourceName, requiredParams, requestBodySchema) {
     requiredParams.forEach(param => {
         allProps.push({
             name: param,
-            value: "string"
+            value: "string",
+            description: `Required parameter for the ${resourceName} resource.`
         });
     });
 
@@ -495,10 +513,55 @@ function getSchemaManifest(resourceName, requiredParams, requestBodySchema) {
         allProps.push(...processProperties(requestBodySchema.properties));
     }
 
+    // one last pass through allProps to remove any duplicate properties (data__<name> vs <name>)
+    const dedupedProps = [];
+    const seenNames = new Set();
+    const propMap = new Map(); // Store props by name for easier lookup
+
+    // First, create a map of all properties for easy lookup
+    allProps.forEach(prop => {
+        propMap.set(prop.name, prop);
+    });
+
+    allProps.forEach(prop => {
+        if (prop.name.startsWith('data__')) {
+            const baseName = prop.name.substring(6);
+            // Check if we already have the non-prefixed version
+            if (!seenNames.has(baseName)) {
+                // Check if there's a non-prefixed version
+                const nonPrefixedProp = propMap.get(baseName);
+                if (!nonPrefixedProp) {
+                    // No non-prefixed version exists, keep the data__ version
+                    dedupedProps.push(prop);
+                    seenNames.add(prop.name);
+                }
+            }
+        } else {
+            // Non-prefixed property - check if we need to merge descriptions
+            const dataPrefixedProp = propMap.get(`data__${prop.name}`);
+            
+            if (dataPrefixedProp && dataPrefixedProp.description) {
+                // Merge descriptions if both exist
+                if (prop.description && dataPrefixedProp.description !== prop.description) {
+                    prop.description = `${prop.description} (${dataPrefixedProp.description})`;
+                } else if (!prop.description) {
+                    // Use the data__ description if no native description exists
+                    prop.description = dataPrefixedProp.description;
+                }
+            }
+            
+            dedupedProps.push(prop);
+            seenNames.add(prop.name);
+            // Mark that we've seen this base name to skip any data__ version
+            seenNames.add(`data__${prop.name}`);
+        }
+    });
+
     return [{
         name: resourceName,
-        props: allProps
+        props: dedupedProps
     }];
+
 }
 
 function replaceAllOf(schema, visited = new Set(), depth = 0) {

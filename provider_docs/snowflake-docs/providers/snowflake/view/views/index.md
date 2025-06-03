@@ -204,25 +204,24 @@ SELECT
   props:
     - name: database_name
       value: string
+      description: Required parameter for the views resource.
     - name: schema_name
       value: string
-    - name: data__columns
-      value: string
-    - name: data__name
-      value: string
-    - name: data__query
-      value: string
+      description: Required parameter for the views resource.
     - name: endpoint
       value: string
+      description: Required parameter for the views resource.
     - name: name
       value: string
-      description: Name of the view
+      description: Name of the view (Required parameter for the views resource.)
     - name: secure
       value: boolean
       description: Whether or not this view is secure
     - name: kind
       value: string
-      description: Kind of the view, permanent (default) or temporary
+      description: >-
+        Kind of the view, permanent (default) or temporary (valid values:
+        'PERMANENT', 'TEMPORARY')
     - name: recursive
       value: boolean
       description: >-
@@ -236,13 +235,15 @@ SELECT
         - name: comment
           value: string
           description: Specifies a comment for the column
-      description: The columns of the view
+      description: The columns of the view (Required parameter for the views resource.)
     - name: comment
       value: string
       description: user comment associated to an object in the dictionary
     - name: query
       value: string
-      description: Query used to create the view
+      description: >-
+        Query used to create the view (Required parameter for the views
+        resource.)
 ```
 </TabItem>
 </Tabs>
