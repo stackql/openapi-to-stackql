@@ -209,7 +209,7 @@ AND endpoint = '{{ endpoint }}';
 
 ## `INSERT` example
 
-Use the following StackQL query and manifest file to create a new <code>warehouses</code> resource.
+Create a virtual warehouse. Equivalent to CREATE WAREHOUSE in SQL.
 
 <Tabs
     defaultValue="all"
@@ -403,7 +403,7 @@ SELECT
 
 ## `REPLACE` example
 
-Replaces all fields in the specified <code>warehouses</code> resource.
+Create a (or alter an existing) warehouse. Even if the operation is just an alter, the full property set must be provided.
 
 ```sql
 /*+ update */
@@ -438,7 +438,7 @@ AND endpoint = '{{ endpoint }}';
 
 ## `DELETE` example
 
-Deletes the specified <code>warehouses</code> resource.
+Removes the specified virtual warehouse from the system. Equivalent to DROP WAREHOUSE in SQL.
 
 ```sql
 /*+ delete */

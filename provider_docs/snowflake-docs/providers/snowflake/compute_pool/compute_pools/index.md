@@ -161,7 +161,7 @@ AND endpoint = '{{ endpoint }}';
 
 ## `INSERT` example
 
-Use the following StackQL query and manifest file to create a new <code>compute_pools</code> resource.
+Creates a compute pool, with standard create modifiers as query parameters. See the Compute Pool component definition for what is required to be provided in the request body.
 
 <Tabs
     defaultValue="all"
@@ -267,7 +267,7 @@ SELECT
 
 ## `REPLACE` example
 
-Replaces all fields in the specified <code>compute_pools</code> resource.
+Create a (or alter an existing) compute pool. Even if the operation is just an alter, the full property set must be provided.
 
 ```sql
 /*+ update */
@@ -291,7 +291,7 @@ AND endpoint = '{{ endpoint }}';
 
 ## `DELETE` example
 
-Deletes the specified <code>compute_pools</code> resource.
+Deletes a compute pool with the given name. If you enable the `ifExists` parameter, the operation succeeds even if the object does not exist. Otherwise, a 404 failure is returned if the object does not exist.
 
 ```sql
 /*+ delete */

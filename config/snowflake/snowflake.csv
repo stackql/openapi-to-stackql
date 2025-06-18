@@ -181,9 +181,9 @@ service.yaml,/api/v2/databases/{database}/schemas/{schema}/services/{name}:suspe
 service.yaml,/api/v2/databases/{database}/schemas/{schema}/services/{service}/roles/{name}/grants,get,ServiceRoleGrantTo,service,service,grants,list_service_role_grants_to,select,listServiceRoleGrantsTo
 service.yaml,/api/v2/databases/{database}/schemas/{schema}/services/{service}/roles/{name}/grants-of,get,GrantOf,service,service,grants_of,list_service_role_grants_of,select,listServiceRoleGrantsOf
 service.yaml,/api/v2/databases/{database}/schemas/{schema}/services:execute-job,post,,service,service,services,execute_job_service,,executeJobService
-sqlapi.yaml,/api/v2/statements,post,ResultSet,statements,sqlapi,statements,submit_statement,select,SubmitStatement
+sqlapi.yaml,/api/v2/statements,post,ResultSet,statements,sqlapi,statements,submit_statement,insert,SubmitStatement
 sqlapi.yaml,/api/v2/statements/{statementHandle},get,ResultSet,statements,sqlapi,statements,get_statement_status,select,GetStatementStatus
-sqlapi.yaml,/api/v2/statements/{statementHandle}/cancel,post,CancelStatus,statements,sqlapi,statements,cancel_statement,,CancelStatement
+sqlapi.yaml,/api/v2/statements/{statementHandle}/cancel,post,CancelStatus,statements,sqlapi,statements,cancel_statement,delete,CancelStatement
 stage.yaml,/api/v2/databases/{database}/schemas/{schema}/stages,post,,stage,stage,stages,create_stage,insert,createStage
 stage.yaml,/api/v2/databases/{database}/schemas/{schema}/stages,get,Stage,stage,stage,stages,list_stages,select,listStages
 stage.yaml,/api/v2/databases/{database}/schemas/{schema}/stages/{name},delete,,stage,stage,stages,delete_stage,delete,deleteStage

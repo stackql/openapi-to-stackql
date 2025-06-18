@@ -825,7 +825,7 @@ ${yamlManifest.trim()}`;
         return `
 ## ${mdCodeAnchor}INSERT${mdCodeAnchor} example
 
-Use the following StackQL query and manifest file to create a new <code>${resourceName}</code> resource.
+${cleanDescription(method.description)}
 
 <Tabs
     defaultValue="all"
@@ -921,10 +921,11 @@ function generateUpdateExample(providerName, serviceName, resourceName, resource
         const whereClause = requiredParams.map(param => `${param} = '{{ ${param} }}'`).join('\nAND ');
 
         // Description based on operation type
-        let sqlDescription = `Updates a <code>${resourceName}</code> resource.`;
-        if (isReplace) {
-            sqlDescription = `Replaces all fields in the specified <code>${resourceName}</code> resource.`;
-        }
+        // let sqlDescription = `Updates a <code>${resourceName}</code> resource.`;
+        // if (isReplace) {
+        //     sqlDescription = `Replaces all fields in the specified <code>${resourceName}</code> resource.`;
+        // }
+        let sqlDescription = `${cleanDescription(method.description)}`;
 
         return `
 ## ${mdCodeAnchor}${isReplace ? 'REPLACE' : 'UPDATE'}${mdCodeAnchor} example
@@ -950,7 +951,7 @@ function generateDeleteExample(providerName, serviceName, resourceName, method) 
     return `
 ## ${mdCodeAnchor}DELETE${mdCodeAnchor} example
 
-Deletes the specified <code>${resourceName}</code> resource.
+${cleanDescription(method.description)}
 
 ${sqlCodeBlockStart}
 /*+ delete */

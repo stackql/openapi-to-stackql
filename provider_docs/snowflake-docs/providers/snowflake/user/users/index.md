@@ -211,7 +211,7 @@ AND endpoint = '{{ endpoint }}';
 
 ## `INSERT` example
 
-Use the following StackQL query and manifest file to create a new <code>users</code> resource.
+Create a user according to the parameters given
 
 <Tabs
     defaultValue="all"
@@ -389,7 +389,7 @@ SELECT
 
 ## `REPLACE` example
 
-Replaces all fields in the specified <code>users</code> resource.
+Create a (or alter an existing) user. Even if the operation is just an alter, the full property set must be provided. Note that password is not currently altered by this operation but is supported for a newly-created object.
 
 ```sql
 /*+ update */
@@ -426,7 +426,7 @@ AND endpoint = '{{ endpoint }}';
 
 ## `DELETE` example
 
-Deletes the specified <code>users</code> resource.
+Delete a user with the given name.
 
 ```sql
 /*+ delete */
