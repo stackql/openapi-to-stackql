@@ -476,12 +476,16 @@ function getSchemaManifest(resourceName, requiredParams, requestBodySchema) {
                 }
             }
 
-            // Handle nested objects recursively
             if (type === "object" && prop.properties) {
                 const nestedProps = processProperties(prop.properties);
+
+                const isFlatObject = nestedProps.every(p => typeof p.value === 'string');
+                
                 result.push({
                     ...baseProperty,
-                    value: nestedProps
+                    value: isFlatObject
+                        ? Object.fromEntries(nestedProps.map(p => [p.name, p.value]))
+                        : nestedProps
                 });
             } else if (type === "array" && prop.items && prop.items.type === "object" && prop.items.properties) {
                 // If array of objects, process items properties as nested value
